@@ -20,7 +20,7 @@
     <v-container class="py-6 py-md-10">
       <v-row justify="center">
         <v-col cols="12" md="11" lg="10">
-          <h2 class="text-h4 font-weight-bold mb-6 text-center" :class="{ ' BIPOCtext-h5': $vuetify.display.xs }">
+          <h2 class="text-h4 font-weight-bold mb-6 text-center" :class="{ 'text-h5': $vuetify.display.xs }">
             Get In Touch
           </h2>
           <p class="text-body-1 text-grey-darken-2 mb-8 text-center px-2" :class="{ 'text-body-2': $vuetify.display.xs }">
@@ -48,7 +48,7 @@
                     </template>
                     <v-list-item-title class="font-weight-bold">Address</v-list-item-title>
                     <v-list-item-subtitle class="text-wrap">
-                      1418 Central Avenue, Far Rockaway, NY 11691
+                      588 State Street, Bridgeport, CT 06604
                     </v-list-item-subtitle>
                   </v-list-item>
 
@@ -113,7 +113,7 @@
     <!-- Map -->
     <v-container fluid class="pa-0">
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3027.080827419747!2d-73.75031468459473!3d40.67346827933677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25e9c7b5c7b9b%3A0x6e8e6c8f8e8e6c8f!2s1418%20Central%20Ave%2C%20Far%20Rockaway%2C%20NY%2011691!5e0!3m2!1sen!2us!4v1630000000000"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2996.776219737246!2d-73.19139168458916!3d41.17918997928424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e80e2b1f7c7b8b%3A0x6e8e6c8f8e8e6c8f!2s588%20State%20St%2C%20Bridgeport%2C%20CT%2006604!5e0!3m2!1sen!2us!4v1660000000000"
         width="100%"
         :height="$vuetify.display.smAndDown ? 250 : 350"
         style="border:0;"
@@ -121,101 +121,6 @@
         referrerpolicy="no-referrer-when-downgrade"
       ></iframe>
     </v-container>
-
-    <!-- Department Contacts -->
-    <!-- <v-container class="py-6 py-md-10 bg-grey-lighten-4">
-      <v-row justify="center">
-        <v-col cols="12" md="11" lg="10">
-          <h2 class="text-h4 font-weight-bold mb-8 text-center" :class="{ 'text-h5': $vuetify.display.xs }">
-            Department Contacts
-          </h2>
-          <v-row>
-            <v-col v-for="dept in departments" :key="dept.title" cols="12" sm="6" md="3" class="mb-4">
-              <v-card
-                height="100%"
-                class="text-center pa-4"
-                elevation="2"
-                rounded="lg"
-                :style="{ transition: 'transform 0.3s' }"
-                @mouseover="hoverCard(dept.title)"
-                @mouseleave="resetHover"
-              >
-                <v-icon :icon="dept.icon" size="40" color="primary" class="mb-3"></v-icon>
-                <v-card-title class="text-subtitle-1 font-weight-bold justify-center text-wrap">
-                  {{ dept.title }}
-                </v-card-title>
-                <v-card-text>
-                  <p class="mb-2 text-wrap">
-                    <a :href="`mailto:${dept.email}`" class="text-decoration-none">
-                      {{ dept.email }}
-                    </a>
-                  </p>
-                  <p>
-                    <a :href="`tel:${dept.phone}`" class="text-decoration-none">
-                      {{ dept.phone }}
-                    </a>
-                  </p>
-                </v-card-text>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-container> -->
-
-    <!-- Newsletter Signup -->
-    <!-- <v-container class="py-6 py-md-10">
-      <v-row justify="center">
-        <v-col cols="12" md="8" lg="6">
-          <h2 class="text-h4 font-weight-bold mb-4 text-center" :class="{ 'text-h5': $vuetify.display.xs }">
-            Stay Connected
-          </h2>
-          <p class="text-body-1 text-grey-darken-2 mb-6 text-center px-2" :class="{ 'text-body-2': $vuetify.display.xs }">
-            Subscribe to our newsletter for updates on programs, events, and community impact.
-          </p>
-          <v-form ref="newsletterForm" v-model="newsletterValid" @submit.prevent="subscribe">
-            <v-row align="center">
-              <v-col :cols="$vuetify.display.xs ? 12 : 8">
-                <v-text-field
-                  v-model="newsletterEmail"
-                  :rules="emailRules"
-                  label="Email Address"
-                  variant="outlined"
-                  placeholder="your@email.com"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col :cols="$vuetify.display.xs ? 12 : 4">
-                <v-btn
-                  color="primary"
-                  size="large"
-                  block
-                  :height="$vuetify.display.xs ? 48 : 56"
-                  type="submit"
-                  :loading="newsletterLoading"
-                  :disabled="!newsletterValid"
-                >
-                  Subscribe
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-form>
-          <v-snackbar
-            v-model="newsletterSnackbar.show"
-            :color="newsletterSnackbar.color"
-            :timeout="3000"
-            location="top"
-          >
-            {{ newsletterSnackbar.message }}
-            <template v-slot:actions>
-              <v-btn color="white" variant="text" @click="newsletterSnackbar.show = false">
-                Close
-              </v-btn>
-            </template>
-          </v-snackbar>
-        </v-col>
-      </v-row>
-    </v-container> -->
   </div>
 </template>
 
@@ -343,13 +248,11 @@ export default defineComponent({
   transform: translateY(-4px);
 }
 
-/* Ensure text wraps properly and doesn't get cut off */
 .v-list-item-subtitle {
   white-space: normal;
   word-break: break-word;
 }
 
-/* Responsive typography and spacing */
 @media (max-width: 600px) {
   .text-h4 {
     font-size: 1.5rem !important;
@@ -369,13 +272,11 @@ export default defineComponent({
   }
 }
 
-/* Touch-friendly interactions */
 .v-btn, .v-card {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
-/* Optimize list spacing */
 .v-list-item {
   padding: 6px 0;
 }
