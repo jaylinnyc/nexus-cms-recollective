@@ -1,0 +1,60 @@
+# Combined .gitignore for the monorepo (backend and frontend)
+
+### System Files
+.DS_Store
+
+### Global Files
+HELP.md
+
+### Backend (Spring Boot) Build Artifacts & Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### IntelliJ IDEA (global)
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans (global)
+/nbproject/private/
+/nbbuild/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code (global)
+.vscode/
+
+### Global Environment Variables
+.env*
+
+### Frontend (Vue) Specific Files
+# Node modules and build output should be scoped to the frontend folder
+frontend/node_modules/
+frontend/dist/
+
+### Backend (Vue) Specific Files
+backend/node_modules/
+backend/dist/
+
+# Local environment files in the frontend
+frontend/.env.local
+frontend/.env.*.local
+
+# Frontend log files
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+
+### Additional Editor Files (if present anywhere)
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

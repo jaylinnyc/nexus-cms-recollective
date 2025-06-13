@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  rc-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/src:/app/src
+    labels:
+      - "traefik.http.routers.rc-frontend.entrypoints=web"
+      - "traefik.http.routers.rc-frontend.rule=Host(`recollective.local`)"
+    networks:
+      - traefik-net
+    env_file:
+      - ./frontend/.env.docker
+
+  rc-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-backend/tokens:/app/tokens"
+    labels:
+      - "traefik.http.routers.rc-backend.entrypoints=web"
+      - "traefik.http.routers.rc-backend.rule=Host(`api.recollective.local`)"
+      - "traefik.http.services.rc-backend.loadbalancer.server.port=8000"
+    networks:
+      - traefik-net
+    env_file:
+      - ./backend/.env.docker
+    environment:
+      - PYTHONUNBUFFERED=1  # Ensure unbuffered console output
+networks:
+  traefik-net:
+    external: true

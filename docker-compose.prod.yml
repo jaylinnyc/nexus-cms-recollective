@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  rc-frontend:
+    image: docker.goodgermy.com/nexus/recollective-frontend:latest
+    container_name: rc-frontend
+    env_file:
+      - .env.production.frontend
+    restart: unless-stopped
+    networks:
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-net"
+      - "traefik.http.services.rc-frontend.loadbalancer.server.port=80"
+      - "traefik.http.routers.rc-frontend.rule=Host(`recollectivect.com`,`www.recollectivect.com`)"
+      - "traefik.http.routers.rc-frontend.entrypoints=websecure"
+      - "traefik.http.routers.rc-frontend.tls=true"
+      - "traefik.http.routers.rc-frontend.tls.certresolver=default-resolver"
+
+  rc-backend:
+    image: docker.goodgermy.com/nexus/recollective-backend:latest
+    container_name: rc-backend
+    env_file:
+      - .env.production.backend
+    restart: unless-stopped
+    networks:
+      - traefik-net
+    volumes:
+      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-backend/tokens:/app/tokens"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-net"
+      - "traefik.http.routers.rc-backend.rule=Host(`api.recollectivect.com`)"
+      - "traefik.http.routers.rc-backend.entrypoints=websecure"
+      - "traefik.http.routers.rc-backend.tls=true"
+      - "traefik.http.routers.rc-backend.tls.certresolver=default-resolver"
+      - "traefik.http.services.rc-backend.loadbalancer.server.port=8000"
+
+  rc-minio:
+    image: minio/minio:latest
+    container_name: rc-minio
+    command: server /data --console-address ":9001"
+    env_file:
+      - .env.production.minio
+    environment:
+      # Reverted to single redirect URL to avoid MinIO issues; update if .org is preferred
+      MINIO_BROWSER_REDIRECT_URL: "https://console.media.recollectivect.com"
+      MINIO_NOTIFY_WEBHOOK_ENABLE_RESIZER: "on"
+      MINIO_NOTIFY_WEBHOOK_ENDPOINT_RESIZER: "http://rc-image-resizer:8080/events"
+      MINIO_NOTIFY_WEBHOOK_QUEUE_DIR_RESIZER: "/data/.minio.sys/queue"
+      MINIO_NOTIFY_WEBHOOK_QUEUE_LIMIT_RESIZER: "0"
+    restart: unless-stopped
+    volumes:
+      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-minio-data:/data"
+    networks:
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rc-minio-api.rule=Host(`media.recollectivect.com`)"
+      - "traefik.http.routers.rc-minio-api.entrypoints=websecure"
+      - "traefik.http.routers.rc-minio-api.tls=true"
+      - "traefik.http.routers.rc-minio-api.tls.certresolver=default-resolver"
+      - "traefik.http.routers.rc-minio-api.service=rc-minio-api"
+      - "traefik.http.services.rc-minio-api.loadbalancer.server.port=9000"
+      - "traefik.http.routers.rc-minio-console.rule=Host(`console.media.recollectivect.com`)"
+      - "traefik.http.routers.rc-minio-console.entrypoints=websecure"
+      - "traefik.http.routers.rc-minio-console.tls=true"
+      - "traefik.http.routers.rc-minio-console.tls.certresolver=default-resolver"
+      - "traefik.http.routers.rc-minio-console.service=rc-minio-console"
+      - "traefik.http.services.rc-minio-console.loadbalancer.server.port=9001"
+
+  rc-image-resizer:
+    image: docker.goodgermy.com/nexus/recollective-image-resizer:latest
+    container_name: rc-image-resizer
+    env_file:
+      - .env.production.image-resizer
+    environment:
+      PYTHONUNBUFFERED: "1"
+    command:
+      - python
+      - -u
+      - app.py
+    depends_on:
+      - rc-minio
+    restart: unless-stopped
+    networks:
+      - traefik-net
+    expose:
+      - "8080"
+
+networks:
+  traefik-net:
+    external: true
