@@ -14,9 +14,9 @@
     </transition>
 
     <!-- Main Content Wrapper -->
-    <div ref="contentRef" class="main-content-wrapper">
-      <transition name="content-fade">
-        <div v-show="!showHero" class="main-content">
+    <transition name="content-fade" appear>
+      <div v-if="!showHero" class="main-content-wrapper">
+        <div class="main-content">
           <!-- Mission Statement -->
           <v-container class="py-12">
             <v-row justify="center">
@@ -58,8 +58,8 @@
             <v-btn color="white" variant="outlined" size="large" to="/visit-us" class="rounded-pill px-8">Plan Your Visit</v-btn>
           </v-container>
         </div>
-      </transition>
-    </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -87,8 +87,8 @@ export default defineComponent({
         overlay.style.background = 'rgba(255, 255, 255, 0)'
         setTimeout(() => {
           overlay.style.background = 'rgba(255, 255, 255, 1)'
-          // Wait for the overlay transition to complete
           overlay.addEventListener('transitionend', () => {
+            console.log('Overlay transition ended, hiding hero')
             showHero.value = false
           }, { once: true })
         }, 100)
@@ -96,6 +96,7 @@ export default defineComponent({
     })
 
     const onHeroRemoved = () => {
+      console.log('Hero removed, scrolling to top')
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
@@ -116,13 +117,18 @@ export default defineComponent({
 }
 
 /* Content Fade Transition */
-.content-fade-enter-active,
+.content-fade-enter-active {
+  transition: opacity 1.5s ease-in-out 1s; /* 1.5s duration, 1s delay */
+}
 .content-fade-leave-active {
-  transition: opacity 1.2s ease-in-out;
+  transition: opacity 1.5s ease-in-out;
 }
 .content-fade-enter-from,
 .content-fade-leave-to {
   opacity: 0;
+}
+.content-fade-enter-to {
+  opacity: 1;
 }
 
 /* Hero Layout */
