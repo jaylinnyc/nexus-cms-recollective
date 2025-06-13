@@ -168,7 +168,7 @@ export default defineComponent({
   width: 100vw;
   height: 100vh;
   z-index: 2;
-  transition: background 2s ease-out;
+  transition: background 3s ease-out;
 }
 
 .logo-container {
