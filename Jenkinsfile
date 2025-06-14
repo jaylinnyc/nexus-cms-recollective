@@ -43,6 +43,13 @@ pipeline {
                           scp -o StrictHostKeyChecking=no .env.production.image-resizer              ${prodUser}@${prodHost}:${remoteDir}/.env.production.image-resizer
                         """
 
+                        // Set permissions to make env files writable and readable by owner
+                        sh """
+                          ssh -o StrictHostKeyChecking=no ${prodUser}@${prodHost} \\
+                            "cd ${remoteDir} && \\
+                             chmod 600 .env.production.frontend .env.production.backend .env.production.minio .env.production.image-resizer"
+                        """
+
                         // Pull new images and deploy
                         sh """
                           ssh -o StrictHostKeyChecking=no ${prodUser}@${prodHost} \\
