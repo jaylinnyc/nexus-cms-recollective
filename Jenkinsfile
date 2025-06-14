@@ -47,7 +47,7 @@ pipeline {
                         sh """
                           ssh -o StrictHostKeyChecking=no ${prodUser}@${prodHost} \\
                             "cd ${remoteDir} && \\
-                             chmod 600 .env.production.frontend .env.production.backend .env.production.minio .env.production.image-resizer"
+                             chmod 600 docker-compose.prod.yml .env.production.frontend .env.production.backend .env.production.minio .env.production.image-resizer"
                         """
 
                         // Pull new images and deploy
