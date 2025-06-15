@@ -63,8 +63,8 @@ pipeline {
                                     export DOCKER_CONFIG=/tmp/docker-config && \\
                                     cd ${remoteDir} && \\
                                     export PATH=/opt/homebrew/bin:/usr/local/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin && \\
-                                    docker-compose -f docker-compose.prod.yml pull && \\
-                                    docker-compose -f docker-compose.prod.yml up -d --build --force-recreate --remove-orphans && \\
+                                    docker compose -f docker-compose.prod.yml pull && \\
+                                    docker compose -f docker-compose.prod.yml up -d --build --force-recreate --remove-orphans && \\
                                     rm /tmp/docker-config.json"
                             """
                         }
