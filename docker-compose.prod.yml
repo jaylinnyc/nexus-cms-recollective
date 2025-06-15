@@ -19,7 +19,7 @@ services:
       - "traefik.http.routers.rc-frontend.tls.certresolver=default-resolver"
 
   rc-backend:
-    image: docker.goodgermy.com/nexus/recollective-backend:latest
+    image: docker.goodgermy.com/nexus/oauth:latest
     container_name: rc-backend
     env_file:
       - .env.production.backend
