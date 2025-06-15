@@ -40,7 +40,6 @@ services:
   rc-minio:
     image: minio/minio:latest
     container_name: rc-minio
-    command: server /data --console-address ":9001"
     env_file:
       - .env.production.minio
     environment:
@@ -53,6 +52,8 @@ services:
     restart: unless-stopped
     volumes:
       - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-minio-data:/data"
+      - ./init-minio.sh:/init-minio.sh
+    entrypoint: ["/bin/sh", "-c", "chmod +x /init-minio.sh && /init-minio.sh && minio server /data --console-address ':9001'"]
     networks:
       - traefik-net
     labels:
