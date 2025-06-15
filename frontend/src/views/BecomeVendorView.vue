@@ -2,7 +2,7 @@
   <div>
     <!-- Become a Vendor Hero -->
     <v-parallax
-      src="https://media.recollectivect.com/public/become_vendor_banner.jpg"
+      src="https://media.recollectivect.com/public/web%2Fantiques–800w.png"
       height="400"
       scale="1.5"
     >

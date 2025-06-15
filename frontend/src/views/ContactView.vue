@@ -2,7 +2,7 @@
   <div>
     <!-- Contact Hero -->
     <v-parallax
-      src="https://media.recollectivect.com/public/contact_us_banner.jpg"
+      src="https://media.recollectivect.com/public/web%2Fantiques–800w.png"
       :height="$vuetify.display.smAndDown ? 250 : 400"
       scale="1.5"
     >

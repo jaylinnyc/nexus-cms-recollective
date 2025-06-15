@@ -4,7 +4,7 @@
     <transition name="hero-fade" @after-leave="onHeroRemoved">
       <div class="hero-container full-screen-hero" v-if="showHero">
         <div class="hero-background">
-          <img src="https://media.recollectivect.com/public/home-bg.png" alt="Home page Background" class="background-image" />
+          <img src="https://media.recollectivect.com/public/web%2Fhome-bg%E2%80%93800w.png" alt="Home page Background" class="background-image" />
           <div class="overlay"></div>
           <div class="logo-container">
             <img src="/rc-transparent.png" alt="The Recollective Logo" class="animated-logo" />
@@ -74,9 +74,9 @@ export default defineComponent({
   },
   setup() {
     const vendors = [
-      { title: 'Vintage Décor & European Finds', description: 'Over 20 years curating...', imageUrl: '/vendor-european.jpg', link: '/vendors' },
-      { title: 'Modern Art & Local Originals', description: 'Original works and prints...', imageUrl: '/vendor-art.jpg', link: '/vendors' },
-      { title: 'Curiosities & Rare Treasures', description: 'Vintage signage and forgotten...', imageUrl: '/vendor-curiosities.jpg', link: '/vendors' },
+      { title: 'Vintage Décor & European Finds', description: 'Over 20 years curating...', imageUrl: 'https://media.recollectivect.com/public/web%2Fvendor1–800w.png', link: '/vendors' },
+      { title: 'Modern Art & Local Originals', description: 'Original works and prints...', imageUrl: 'https://media.recollectivect.com/public/web%2Fvendor2–800w.png', link: '/vendors' },
+      { title: 'Curiosities & Rare Treasures', description: 'Vintage signage and forgotten...', imageUrl: 'https://media.recollectivect.com/public/web%2Fvendor3–800w.png', link: '/vendors' },
     ]
 
     const showHero = ref(true)

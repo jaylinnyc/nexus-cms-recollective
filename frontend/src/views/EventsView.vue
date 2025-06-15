@@ -2,7 +2,7 @@
   <div>
     <!-- Events Hero -->
     <v-parallax
-      src="https://media.recollectivect.com/public/events_banner.jpg"
+      src="https://media.recollectivect.com/public/web%2Fantiques–800w.png"
       :height="$vuetify.display.smAndDown ? 300 : 400"
       scale="1.5"
     >
