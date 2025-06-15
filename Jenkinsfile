@@ -9,17 +9,17 @@ pipeline {
 
                 // Use withCredentials to retrieve the secret files and copy them to the workspace.
                 withCredentials([
-                    file(credentialsId: 'recollective-prod-env-frontend',     variable: 'FRONTEND_ENV_FILE'),
-                    file(credentialsId: 'recollective-prod-env-backend',     variable: 'BACKEND_ENV_FILE'),
-                    file(credentialsId: 'recollective-prod-env-minio',        variable: 'MINIO_ENV_FILE'),
-                    file(credentialsId: 'recollective-prod-env-image-resizer',variable: 'RESIZER_ENV_FILE')
+                    file(credentialsId: 'recollective-prod-env-frontend', variable: 'FRONTEND_ENV_FILE'),
+                    file(credentialsId: 'recollective-prod-env-backend', variable: 'BACKEND_ENV_FILE'),
+                    file(credentialsId: 'recollective-prod-env-minio', variable: 'MINIO_ENV_FILE'),
+                    file(credentialsId: 'recollective-prod-env-image-resizer', variable: 'RESIZER_ENV_FILE')
                 ]) {
                     // Copy each secret file to the expected .env.* filename
                     sh '''
-                      cp $FRONTEND_ENV_FILE          .env.production.frontend
-                      cp $BACKEND_ENV_FILE          .env.production.backend
-                      cp $MINIO_ENV_FILE             .env.production.minio
-                      cp $RESIZER_ENV_FILE           .env.production.image-resizer
+                      cp $FRONTEND_ENV_FILE .env.production.frontend
+                      cp $BACKEND_ENV_FILE .env.production.backend
+                      cp $MINIO_ENV_FILE .env.production.minio
+                      cp $RESIZER_ENV_FILE .env.production.image-resizer
                     '''
                 }
             }
@@ -30,23 +30,26 @@ pipeline {
                 // Use SSH Agent for authentication with your production server.
                 sshagent(credentials: ['jenkins-docker']) {
                     script {
-                        def prodUser  = 'jay'
-                        def prodHost  = 'host.docker.internal'
+                        def prodUser = 'jay'
+                        def prodHost = 'host.docker.internal'
                         def remoteDir = '~/mydata/nexus/recollective'
 
-                        // Transfer compose + all four env files
+                        // Transfer deploy-scripts folder, docker-compose.prod.yml, and env files
                         sh """
-                          scp -o StrictHostKeyChecking=no docker-compose.prod.yml                      ${prodUser}@${prodHost}:${remoteDir}/docker-compose.prod.yml
-                          scp -o StrictHostKeyChecking=no .env.production.frontend                   ${prodUser}@${prodHost}:${remoteDir}/.env.production.frontend
-                          scp -o StrictHostKeyChecking=no .env.production.backend                   ${prodUser}@${prodHost}:${remoteDir}/.env.production.backend
-                          scp -o StrictHostKeyChecking=no .env.production.minio                      ${prodUser}@${prodHost}:${remoteDir}/.env.production.minio
-                          scp -o StrictHostKeyChecking=no .env.production.image-resizer              ${prodUser}@${prodHost}:${remoteDir}/.env.production.image-resizer
+                          scp -r -o StrictHostKeyChecking=no deploy-scripts ${prodUser}@${prodHost}:${remoteDir}/
+                          scp -o StrictHostKeyChecking=no docker-compose.prod.yml ${prodUser}@${prodHost}:${remoteDir}/docker-compose.prod.yml
+                          scp -o StrictHostKeyChecking=no .env.production.frontend ${prodUser}@${prodHost}:${remoteDir}/.env.production.frontend
+                          scp -o StrictHostKeyChecking=no .env.production.backend ${prodUser}@${prodHost}:${remoteDir}/.env.production.backend
+                          scp -o StrictHostKeyChecking=no .env.production.minio ${prodUser}@${prodHost}:${remoteDir}/.env.production.minio
+                          scp -o StrictHostKeyChecking=no .env.production.image-resizer ${prodUser}@${prodHost}:${remoteDir}/.env.production.image-resizer
                         """
 
-                        // Set permissions to make env files writable and readable by owner
+                        // Set permissions for deploy-scripts, docker-compose, and env files
                         sh """
                           ssh -o StrictHostKeyChecking=no ${prodUser}@${prodHost} \\
                             "cd ${remoteDir} && \\
+                             chmod -R 600 deploy-scripts/* && \\
+                             chmod +x deploy-scripts/init-minio.sh && \\
                              chmod 600 docker-compose.prod.yml .env.production.frontend .env.production.backend .env.production.minio .env.production.image-resizer"
                         """
 

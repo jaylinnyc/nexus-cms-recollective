@@ -43,7 +43,6 @@ services:
     env_file:
       - .env.production.minio
     environment:
-      # Reverted to single redirect URL to avoid MinIO issues; update if .org is preferred
       MINIO_BROWSER_REDIRECT_URL: "https://console.media.recollectivect.com"
       MINIO_NOTIFY_WEBHOOK_ENABLE_RESIZER: "on"
       MINIO_NOTIFY_WEBHOOK_ENDPOINT_RESIZER: "http://rc-image-resizer:8080/events"
@@ -52,7 +51,7 @@ services:
     restart: unless-stopped
     volumes:
       - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-minio-data:/data"
-      - ./init-minio.sh:/init-minio.sh
+      - ./deploy-scripts/init-minio.sh:/init-minio.sh
     entrypoint: ["/bin/sh", "-c", "chmod +x /init-minio.sh && /init-minio.sh && minio server /data --console-address ':9001'"]
     networks:
       - traefik-net
