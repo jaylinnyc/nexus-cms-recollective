@@ -4,7 +4,7 @@
     <transition name="hero-fade" @after-leave="onHeroRemoved">
       <div class="hero-container full-screen-hero" v-if="showHero">
         <div class="hero-background">
-          <img src="/home-bg.png" alt="Hero Background" class="background-image" />
+          <img src="https://media.recollectivect.com/public/home-bg.png" alt="Home page Background" class="background-image" />
           <div class="overlay"></div>
           <div class="logo-container">
             <img src="/rc-transparent.png" alt="The Recollective Logo" class="animated-logo" />

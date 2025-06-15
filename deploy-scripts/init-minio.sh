@@ -24,6 +24,9 @@ mc mb myminio/public || echo "Bucket 'public' already exists"
 # Set public read access
 mc anonymous set download myminio/public
 
+# Register webhook notification for image resizer
+mc event add myminio/public arn:minio:sqs::RESIZER:webhook --event put || echo "Webhook 'RESIZER' already configured"
+
 # Shut down temporary MinIO process
 kill $MINIO_PID
 wait $MINIO_PID 2>/dev/null || true
