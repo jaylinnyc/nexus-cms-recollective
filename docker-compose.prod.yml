@@ -38,7 +38,7 @@ services:
       - "traefik.http.services.rc-backend.loadbalancer.server.port=8000"
 
   rc-minio:
-    image: minio/minio:latest
+    image: minio/minio:RELEASE.2025-03-12T18-04-18Z
     container_name: rc-minio
     env_file:
       - .env.production.minio
