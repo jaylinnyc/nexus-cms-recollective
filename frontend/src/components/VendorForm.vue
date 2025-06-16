@@ -45,6 +45,53 @@
             ></v-text-field>
           </v-col>
           <v-col cols="12">
+            <v-text-field
+              v-model="socialMediaHandle"
+              :rules="socialMediaRules"
+              label="Social Media Handle (e.g., @YourHandle)"
+              variant="outlined"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12">
+            <v-text-field
+              v-model="startDate"
+              :rules="startDateRules"
+              label="Anticipated Start Date"
+              type="date"
+              variant="outlined"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12">
+            <v-radio-group
+              v-model="boothType"
+              :rules="boothTypeRules"
+              label="Booth Type Preference"
+              required
+            >
+              <v-radio
+                label="Permanent"
+                value="Permanent"
+              ></v-radio>
+              <v-radio
+                label="Semi-permanent"
+                value="Semi-permanent"
+              ></v-radio>
+              <v-radio
+                label="Temporary/Pop-up"
+                value="Temporary/Pop-up"
+              ></v-radio>
+            </v-radio-group>
+          </v-col>
+          <v-col cols="12">
+            <v-select
+              v-model="referralSource"
+              :items="referralOptions"
+              :rules="referralRules"
+              label="How Did You Hear About Us?"
+              variant="outlined"
+            ></v-select>
+          </v-col>
+          <v-col cols="12">
             <v-textarea
               v-model="inventoryDescription"
               :rules="inventoryRules"
@@ -119,57 +166,86 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { AxiosError } from 'axios'
-import api from '@/plugins/axios'
+import { defineComponent, ref } from 'vue';
+import { AxiosError } from 'axios';
+import api from '@/plugins/axios';
 
 export default defineComponent({
   name: 'VendorForm',
   setup() {
-    const valid = ref(false)
-    const loading = ref(false)
-    const submitted = ref(false)
-    const businessName = ref('')
-    const contactName = ref('')
-    const email = ref('')
-    const phone = ref('')
-    const inventoryDescription = ref('')
-    const experience = ref('')
+    const valid = ref(false);
+    const loading = ref(false);
+    const submitted = ref(false);
+    const businessName = ref('');
+    const contactName = ref('');
+    const email = ref('');
+    const phone = ref('');
+    const socialMediaHandle = ref('');
+    const startDate = ref('');
+    const boothType = ref('');
+    const referralSource = ref('');
+    const inventoryDescription = ref('');
+    const experience = ref('');
     const snackbar = ref({
       show: false,
       message: '',
-      color: 'success'
-    })
+      color: 'success',
+    });
 
     const businessNameRules = [
-      (v: string) => !!v || 'Business name is required'
-    ]
+      (v: string) => !!v || 'Business name is required',
+    ];
 
     const nameRules = [
-      (v: string) => !!v || 'Contact name is required'
-    ]
+      (v: string) => !!v || 'Contact name is required',
+    ];
 
     const emailRules = [
       (v: string) => !!v || 'Email is required',
-      (v: string) => /.+@.+\..+/.test(v) || 'Email must be valid'
-    ]
+      (v: string) => /.+@.+\..+/.test(v) || 'Email must be valid',
+    ];
 
     const phoneRules = [
-      (v: string) => !v || /^\+?1?\d{10,15}$/.test(v.replace(/\D/g, '')) || 'Phone number must be valid'
-    ]
+      (v: string) => !v || /^\+?1?\d{10,15}$/.test(v.replace(/\D/g, '')) || 'Phone number must be valid',
+    ];
+
+    const socialMediaRules = [
+      (v: string) => !v || v.length <= 100 || 'Social media handle must be 100 characters or less',
+    ];
+
+    const startDateRules = [
+      (v: string) => !v || /^\d{4}-\d{2}-\d{2}$/.test(v) || 'Please select a valid date',
+    ];
+
+    const boothTypeRules = [
+      (v: string) => !!v || 'Booth type is required',
+    ];
+
+    const referralRules = [
+      (v: string) => !v || v.length <= 100 || 'Referral source must be 100 characters or less',
+    ];
 
     const inventoryRules = [
       (v: string) => !!v || 'Inventory description is required',
-      (v: string) => v.length >= 20 || 'Description must be at least 20 characters'
-    ]
+      (v: string) => v.length >= 20 || 'Description must be at least 20 characters',
+    ];
 
     const experienceRules = [
       (v: string) => !!v || 'Experience is required',
-      (v: string) => v.length >= 20 || 'Experience must be at least 20 characters'
-    ]
+      (v: string) => v.length >= 20 || 'Experience must be at least 20 characters',
+    ];
+
+    const referralOptions = [
+      'Social Media',
+      'Friend or Family',
+      'Website',
+      'Event or Market',
+      'Advertisement',
+      'Other',
+    ];
 
     const submitForm = async () => {
-      loading.value = true
+      loading.value = true;
       try {
         // Format the email body to include all form data
         const emailBody = `
@@ -178,48 +254,60 @@ export default defineComponent({
           Contact Name: ${contactName.value}
           Email: ${email.value}
           Phone: ${phone.value || 'Not provided'}
+          Social Media Handle: ${socialMediaHandle.value || 'Not provided'}
+          Anticipated Start Date: ${startDate.value || 'Not provided'}
+          Booth Type: ${boothType.value}
+          How Did You Hear About Us: ${referralSource.value || 'Not provided'}
           Inventory Description: ${inventoryDescription.value}
           Experience: ${experience.value}
-        `
+        `;
 
         await api.post(`/send-email`, {
           subject: `Vendor Application from ${contactName.value}`,
-          body: emailBody
-        })
+          body: emailBody,
+        });
 
         // Reset form and show success
-        businessName.value = ''
-        contactName.value = ''
-        email.value = ''
-        phone.value = ''
-        inventoryDescription.value = ''
-        experience.value = ''
-        submitted.value = true
+        businessName.value = '';
+        contactName.value = '';
+        email.value = '';
+        phone.value = '';
+        socialMediaHandle.value = '';
+        startDate.value = '';
+        boothType.value = '';
+        referralSource.value = '';
+        inventoryDescription.value = '';
+        experience.value = '';
+        submitted.value = true;
       } catch (error) {
         // Type the error as AxiosError
-        const axiosError = error as AxiosError<{ error?: string }>
+        const axiosError = error as AxiosError<{ error?: string }>;
         // Show error message
-        const errorMessage = axiosError.response?.data?.error || 'Failed to submit application'
+        const errorMessage = axiosError.response?.data?.error || 'Failed to submit application';
         snackbar.value = {
           show: true,
           message: `Error: ${errorMessage}`,
-          color: 'error'
-        }
+          color: 'error',
+        };
       } finally {
-        loading.value = false
+        loading.value = false;
       }
-    }
+    };
 
     const resetForm = () => {
-      submitted.value = false
-      businessName.value = ''
-      contactName.value = ''
-      email.value = ''
-      phone.value = ''
-      inventoryDescription.value = ''
-      experience.value = ''
-      valid.value = false
-    }
+      submitted.value = false;
+      businessName.value = '';
+      contactName.value = '';
+      email.value = '';
+      phone.value = '';
+      socialMediaHandle.value = '';
+      startDate.value = '';
+      boothType.value = '';
+      referralSource.value = '';
+      inventoryDescription.value = '';
+      experience.value = '';
+      valid.value = false;
+    };
 
     return {
       valid,
@@ -229,20 +317,29 @@ export default defineComponent({
       contactName,
       email,
       phone,
+      socialMediaHandle,
+      startDate,
+      boothType,
+      referralSource,
       inventoryDescription,
       experience,
       businessNameRules,
       nameRules,
       emailRules,
       phoneRules,
+      socialMediaRules,
+      startDateRules,
+      boothTypeRules,
+      referralRules,
       inventoryRules,
       experienceRules,
+      referralOptions,
       submitForm,
       resetForm,
-      snackbar
-    }
-  }
-})
+      snackbar,
+    };
+  },
+});
 </script>
 
 <style scoped>
@@ -255,5 +352,10 @@ export default defineComponent({
 .v-btn {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+}
+
+/* Style radio group for better spacing */
+.v-radio-group {
+  padding: 16px 0;
 }
 </style>
