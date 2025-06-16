@@ -89,33 +89,33 @@ services:
     expose:
       - "8080"
 
-  rc-strapi:
-    image: strapi/strapi:3.6.8-alpine
-    platform: linux/amd64
-    container_name: rc-strapi
-    env_file:
-      - .env.production.strapi
-    environment:
-      DATABASE_CLIENT: sqlite
-      DATABASE_FILENAME: /srv/app/database.sqlite
-      JWT_SECRET: ${STRAPI_JWT_SECRET}
-      ADMIN_JWT_SECRET: ${STRAPI_ADMIN_JWT_SECRET}
-      APP_KEYS: ${STRAPI_APP_KEYS}
-      API_TOKEN_SALT: ${STRAPI_API_TOKEN_SALT}
-      NODE_ENV: production
-    volumes:
-      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi:/srv/app"
-    restart: unless-stopped
-    networks:
-      - traefik-net
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=traefik-net"
-      - "traefik.http.routers.rc-strapi.rule=Host(`cms.recollectivect.com`)"
-      - "traefik.http.routers.rc-strapi.entrypoints=websecure"
-      - "traefik.http.routers.rc-strapi.tls=true"
-      - "traefik.http.routers.rc-strapi.tls.certresolver=default-resolver"
-      - "traefik.http.services.rc-strapi.loadbalancer.server.port=1337"
+  # rc-strapi:
+  #   image: strapi/strapi:3.6.8-alpine
+  #   platform: linux/amd64
+  #   container_name: rc-strapi
+  #   env_file:
+  #     - .env.production.strapi
+  #   environment:
+  #     DATABASE_CLIENT: sqlite
+  #     DATABASE_FILENAME: /srv/app/database.sqlite
+  #     JWT_SECRET: ${STRAPI_JWT_SECRET}
+  #     ADMIN_JWT_SECRET: ${STRAPI_ADMIN_JWT_SECRET}
+  #     APP_KEYS: ${STRAPI_APP_KEYS}
+  #     API_TOKEN_SALT: ${STRAPI_API_TOKEN_SALT}
+  #     NODE_ENV: production
+  #   volumes:
+  #     - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi:/srv/app"
+  #   restart: unless-stopped
+  #   networks:
+  #     - traefik-net
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.docker.network=traefik-net"
+  #     - "traefik.http.routers.rc-strapi.rule=Host(`cms.recollectivect.com`)"
+  #     - "traefik.http.routers.rc-strapi.entrypoints=websecure"
+  #     - "traefik.http.routers.rc-strapi.tls=true"
+  #     - "traefik.http.routers.rc-strapi.tls.certresolver=default-resolver"
+  #     - "traefik.http.services.rc-strapi.loadbalancer.server.port=1337"
 
 networks:
   traefik-net:
