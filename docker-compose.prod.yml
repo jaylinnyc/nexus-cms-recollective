@@ -90,7 +90,8 @@ services:
       - "8080"
 
   rc-strapi:
-    image: strapi/strapi:4.25.10 # Use a specific version for stability
+    image: strapi/strapi:3.6.8-alpine
+    platform: linux/amd64
     container_name: rc-strapi
     env_file:
       - .env.production.strapi
