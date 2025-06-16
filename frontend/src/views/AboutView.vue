@@ -11,22 +11,22 @@
       </div>
     </v-parallax>
 
-    <!-- Our History -->
+    <!-- Our Story -->
     <v-container class="py-8">
       <v-row justify="center">
         <v-col cols="12" md="10" lg="8">
-          <h2 class="text-h4 mb-6 text-black">Our Story</h2>
+          <h2 class="text-h4 mb-6 text-black">Where the Past is Present</h2>
           <p class="text-body-1 text-justify mb-4 text-black">
-            The Recollective was born from a vision to breathe new life into the historic Connecticut Post press hall at 588 State Street, Bridgeport. Once a cavernous space thundering with newspaper presses, it fell silent until a collective of antique enthusiasts, artists, and community leaders transformed it into a 50,000-square-foot marketplace in 2015. What began as a modest gathering of local vendors has grown into a thriving hub where heritage meets creativity, drawing visitors from across the region to explore curated treasures and connect with passionate sellers.
+            The Recollective is more than just a market—it’s a shared vision. A home for hand-picked antiques, vintage finds, original artwork, and timeless design, all brought together by a passionate group of independent vendors.
           </p>
           <p class="text-body-1 text-justify mb-4 text-black">
-            Our mission remains rooted in preserving the past while fostering a vibrant community. Each booth tells a story, and every item carries a piece of history, reflecting the dedication of our independent vendors—some with decades of experience, others emerging talents—who share a love for timeless pieces and the joy of passing them forward.
+            Founded on the idea that the best things in life are discovered—not mass-produced—The Recollective was created as a space where collectors, makers, and treasure-hunters could come together under one roof. Our name reflects our purpose: to gather, to remember, to pass on.
           </p>
         </v-col>
       </v-row>
     </v-container>
 
-    <!-- Our Space and Vendors -->
+    <!-- Our Vendors -->
     <v-container class="py-8 bg-grey-lighten-4">
       <v-row justify="center">
         <v-col cols="12" md="10" lg="8">
@@ -41,12 +41,12 @@
                 ></v-img>
               </v-col>
               <v-col cols="12" md="8">
-                <h2 class="text-h4 mb-4 text-black">Our Space & Vendors</h2>
+                <h2 class="text-h4 mb-4 text-black">Our Vendors</h2>
                 <p class="text-body-1 mb-4 text-justify text-black">
-                  Housed in a restored industrial cathedral, The Recollective blends character with community. Skylights illuminate hand-picked antiques, vintage curiosities, and original artwork, staged by a diverse group of vendors. From seasoned dealers tracking down French armoires to artists showcasing freshly varnished canvases, our market is a living tapestry of heritage and creativity.
+                  Every vendor at The Recollective brings their own eye, taste, and history. Some have been in the antique world for decades, others are emerging local artists or collectors of the beautifully unusual. But they all have one thing in common: a deep appreciation for the pieces they offer and the people they meet.
                 </p>
                 <p class="text-body-1 text-justify text-black">
-                  This shared vision supports sustainability by reviving a historic building and rescuing beautiful pieces from obscurity, fostering authentic human connections in an era of mass production.
+                  From seasoned dealers to fresh talents, our vendors create a living tapestry of heritage and creativity, offering everything from rare antiques to original artwork.
                 </p>
               </v-col>
             </v-row>
@@ -55,33 +55,17 @@
       </v-row>
     </v-container>
 
-    <!-- Founder's Message -->
+    <!-- Our Space -->
     <v-container class="py-8">
       <v-row justify="center">
         <v-col cols="12" md="10" lg="8">
-          <v-card class="pa-6">
-            <v-row>
-              <v-col cols="12" md="4" class="text-center">
-                <v-avatar size="200" class="mb-4">
-                  <v-img
-                    src="https://media.recollectivect.com/public/founder_photo.jpg"
-                    alt="Founder of The Recollective"
-                  ></v-img>
-                </v-avatar>
-              </v-col>
-              <v-col cols="12" md="8">
-                <h2 class="text-h4 mb-4 text-black">A Message from Our Founder</h2>
-                <h3 class="text-h6 mb-2 text-black">Jane Doe</h3> <!-- Replace with actual founder name -->
-                <p class="text-body-1 mb-4 text-justify text-black">
-                  The Recollective is more than a marketplace—it’s a celebration of history and human connection. As its founder, I’ve watched this space evolve from a forgotten press hall into a sanctuary for stories and craftsmanship. My vision was to create a place where every item has a past and every vendor a passion, uniting collectors and creators under one roof.
-                </p>
-                <p class="text-body-1 text-justify text-black">
-                  I’m grateful to our community of vendors and visitors who make this vision a reality. Together, we’re preserving the past while building a future where beauty and heritage thrive. Thank you for being part of this journey.
-                </p>
-                <img src="https://media.recollectivect.com/public/founder_signature.png" alt="Founder Signature" style="height: 40px; margin: 16px;" /> <!-- Replace with actual signature image -->
-              </v-col>
-            </v-row>
-          </v-card>
+          <h2 class="text-h4 mb-6 text-black">Our Space</h2>
+          <p class="text-body-1 text-justify mb-4 text-black">
+            Our market is housed in a spacious, welcoming environment designed for wandering, wondering, and finding what you didn’t even know you were looking for. Whether you’re furnishing a home, finding the perfect accent piece, or just browsing for inspiration, The Recollective invites you to slow down, explore, and connect—with the items, with their stories, and with the community around you.
+          </p>
+          <p class="text-body-1 text-justify text-black">
+            We believe that good things come with age—and the best are meant to be shared.
+          </p>
         </v-col>
       </v-row>
     </v-container>

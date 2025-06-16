@@ -25,7 +25,7 @@ export default defineComponent({
     return {
       isLoading: true,
       isInitialized: false,
-      allowedEmail: 'nexus.admin@recollectivect.com',
+      allowedEmail: 'info@recollectivect.com',
     };
   },
   async created() {

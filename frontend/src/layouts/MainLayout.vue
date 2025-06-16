@@ -119,9 +119,7 @@ export default defineComponent({
       { title: 'Home', path: '/', icon: 'mdi-home' },
       { title: 'About', path: '/about', icon: 'mdi-information' },
       { title: 'Vendors', path: '/vendors', icon: 'mdi-store' },
-      { title: 'Visit Us', path: '/visit-us', icon: 'mdi-map-marker' },
       { title: 'Become a Vendor', path: '/become-a-vendor', icon: 'mdi-plus-box' },
-      { title: 'Events', path: '/events', icon: 'mdi-calendar' },
       { title: 'Contact', path: '/contact', icon: 'mdi-email' }
     ]
 

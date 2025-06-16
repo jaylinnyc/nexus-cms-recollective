@@ -23,8 +23,11 @@
               <v-col cols="12" md="10" lg="8">
                 <div class="pa-8 text-center elevation-4 rounded-lg bg-white">
                   <h2 class="text-h3 font-weight-bold mb-6 text-black">Our Mission</h2>
+                  <p class="text-body-1 text-black opacity-90 mb-4">
+                    To cultivate a vibrant hub in Bridgeport, Connecticut, where a curated collection of antique and pre-loved treasures meets a community of passionate vendors, fostering sustainable practices, unique discoveries, and the preservation of history through conscious consumption.
+                  </p>
                   <p class="text-body-1 text-black opacity-90">
-                    The Recollective is a curated marketplace where heritage meets creativity...
+                    At Recollective, we're dedicated to breathing new life into forgotten objects, creating a dynamic antique warehouse and thrift experience in Bridgeport, CT. Our mission champions sustainability, celebrates the rich stories of the past, and empowers a diverse network of vendors to share their unique finds.
                   </p>
                 </div>
               </v-col>
@@ -109,7 +112,7 @@ export default defineComponent({
 /* Hero Fade Transition */
 .hero-fade-enter-active,
 .hero-fade-leave-active {
-  transition: opacity 1.2s ease-in-out;
+  transition: opacity 1s ease-in-out;
 }
 .hero-fade-enter-from,
 .hero-fade-leave-to {
@@ -118,10 +121,10 @@ export default defineComponent({
 
 /* Content Fade Transition */
 .content-fade-enter-active {
-  transition: opacity 1.5s ease-in-out 1s; /* 1.5s duration, 1s delay */
+  transition: opacity 1s ease-in-out 1s;
 }
 .content-fade-leave-active {
-  transition: opacity 1.5s ease-in-out;
+  transition: opacity 1s ease-in-out;
 }
 .content-fade-enter-from,
 .content-fade-leave-to {
@@ -168,7 +171,7 @@ export default defineComponent({
   width: 100vw;
   height: 100vh;
   z-index: 2;
-  transition: background 3s ease-out;
+  transition: background 2s ease-out;
 }
 
 .logo-container {
