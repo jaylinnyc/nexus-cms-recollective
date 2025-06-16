@@ -1,0 +1,4 @@
+GOOGLE_CLIENT_ID=360463313583-o7p5uqrjevmkesiced1jdnfvmfomtn6q.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
+REDIRECT_URI=https://api.recollectivect.com/auth/google/callback
+ALLOWED_EMAIL=info@recollectivect.com

@@ -12,7 +12,8 @@ pipeline {
                     file(credentialsId: 'recollective-prod-env-frontend', variable: 'FRONTEND_ENV_FILE'),
                     file(credentialsId: 'recollective-prod-env-backend', variable: 'BACKEND_ENV_FILE'),
                     file(credentialsId: 'recollective-prod-env-minio', variable: 'MINIO_ENV_FILE'),
-                    file(credentialsId: 'recollective-prod-env-image-resizer', variable: 'RESIZER_ENV_FILE')
+                    file(credentialsId: 'recollective-prod-env-image-resizer', variable: 'RESIZER_ENV_FILE'),
+                    file(credentialsId: 'recollective-prod-env-strapi', variable: 'STRAPI_ENV_FILE')
                 ]) {
                     // Copy each secret file to the expected .env.* filename
                     sh '''
@@ -20,6 +21,7 @@ pipeline {
                       cp $BACKEND_ENV_FILE .env.production.backend
                       cp $MINIO_ENV_FILE .env.production.minio
                       cp $RESIZER_ENV_FILE .env.production.image-resizer
+                      cp $STRAPI_ENV_FILE .env.production.strapi
                     '''
                 }
             }
@@ -42,6 +44,7 @@ pipeline {
                           scp -o StrictHostKeyChecking=no .env.production.backend ${prodUser}@${prodHost}:${remoteDir}/.env.production.backend
                           scp -o StrictHostKeyChecking=no .env.production.minio ${prodUser}@${prodHost}:${remoteDir}/.env.production.minio
                           scp -o StrictHostKeyChecking=no .env.production.image-resizer ${prodUser}@${prodHost}:${remoteDir}/.env.production.image-resizer
+                          scp -o StrictHostKeyChecking=no .env.production.strapi ${prodUser}@${prodHost}:${remoteDir}/.env.production.strapi
                         """
 
                         // Set permissions for deploy-scripts, docker-compose, and env files
@@ -50,7 +53,7 @@ pipeline {
                             "cd ${remoteDir} && \\
                              chmod -R 600 deploy-scripts/* && \\
                              chmod +x deploy-scripts/init-minio.sh && \\
-                             chmod 600 docker-compose.prod.yml .env.production.frontend .env.production.backend .env.production.minio .env.production.image-resizer"
+                             chmod 600 docker-compose.prod.yml .env.production.frontend .env.production.backend .env.production.minio .env.production.image-resizer .env.production.strapi"
                         """
 
                         // Pull new images and deploy
@@ -70,7 +73,7 @@ pipeline {
     post {
         always {
             // Clean up all temporary .env files
-            sh 'rm -f .env.production.frontend .env.production.backend .env.production.minio .env.production.image-resizer'
+            sh 'rm -f .env.production.frontend .env.production.backend .env.production.minio .env.production.image-resizer .env.production.strapi'
         }
     }
 }
