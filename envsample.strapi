@@ -1,0 +1,16 @@
+# Strapi Security Settings
+STRAPI_JWT_SECRET=your-secure-jwt-secret-32chars # At least 32 characters, generate with `openssl rand -base64 32`
+STRAPI_ADMIN_JWT_SECRET=your-secure-admin-jwt-secret-32chars # At least 32 characters, generate with `openssl rand -base64 32`
+STRAPI_APP_KEYS=app-key-1-32chars,app-key-2-32chars # Two 32-character keys, generate with `openssl rand -base64 32`
+STRAPI_API_TOKEN_SALT=your-api-token-salt-32chars # At least 32 characters, generate with `openssl rand -base64 32`
+
+# Optional: Admin Panel Customization
+STRAPI_ADMIN_EMAIL=info@recollectivect.com # Initial admin email
+STRAPI_ADMIN_PASSWORD=nextstep # Initial admin password (change after setup)
+STRAPI_ADMIN_FIRSTNAME=NextStep
+STRAPI_ADMIN_LASTNAME=Admin
+
+# Optional: Server Configuration
+HOST=0.0.0.0
+PORT=1337
+APP_URL=https://cms.recollectivect.com # Public URL for Strapi
