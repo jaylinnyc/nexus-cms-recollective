@@ -22,41 +22,6 @@
       </v-row>
     </v-container>
 
-    <!-- Booth Options -->
-    <v-container class="py-8 bg-grey-lighten-4">
-      <v-row justify="center">
-        <v-col cols="12" md="10" lg="8">
-          <h2 class="text-h4 mb-6 text-black">Booth Options</h2>
-          <v-row>
-            <v-col cols="12" md="6">
-              <v-card height="100%" class="pa-6 text-center">
-                <v-icon icon="mdi-store" size="64" color="black" class="mb-4"></v-icon>
-                <v-card-title class="text-h5 text-black">Standard Booth</v-card-title>
-                <v-card-text class="text-black">
-                  <p class="mb-4">
-                    Ideal for individual vendors. Includes 10x10 ft space with basic shelving and lighting.
-                  </p>
-                  <p><strong>Price:</strong> Contact us for rates</p>
-                </v-card-text>
-              </v-card>
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-card height="100%" class="pa-6 text-center">
-                <v-icon icon="mdi-storefront" size="64" color="black" class="mb-4"></v-icon>
-                <v-card-title class="text-h5 text-black">Premium Booth</v-card-title>
-                <v-card-text class="text-black">
-                  <p class="mb-4">
-                    Perfect for larger displays. Includes 10x20 ft space with custom shelving and enhanced lighting.
-                  </p>
-                  <p><strong>Price:</strong> Contact us for rates</p>
-                </v-card-text>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-container>
-
     <!-- Application Details -->
     <v-container class="py-8">
       <v-row justify="center">
@@ -114,15 +79,7 @@
       </v-row>
     </v-container>
 
-    <!-- Call to Action -->
-    <v-container class="py-8 text-center">
-      <h2 class="text-h4 mb-4 text-black">Join Our Community</h2>
-      <p class="text-body-1 mb-6 mx-auto text-black" style="max-width: 800px">
-        Become part of The Recollective’s unique marketplace. Apply today and start sharing your treasures with our visitors.
-      </p>
-      <v-btn color="black" variant="outlined" size="large" to="/become-a-vendor" class="rounded-pill px-8">Apply Now</v-btn>
-    </v-container>
-
+    
     <!-- Vendor Form Dialog -->
     <v-dialog
       v-model="showVendorForm"

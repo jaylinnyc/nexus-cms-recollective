@@ -84,7 +84,7 @@
       <v-row justify="center" no-gutters>
         <v-col cols="12" class="mb-4">
           <v-btn
-            v-for="icon in ['mdi-facebook', 'mdi-twitter', 'mdi-instagram']"
+            v-for="icon in ['mdi-facebook', 'mdi-twitter', 'mdi-instagram', 'mdi-tiktok']"
             :key="icon"
             class="mx-2"
             icon
