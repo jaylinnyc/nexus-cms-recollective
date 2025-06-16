@@ -83,8 +83,9 @@
     >
       <v-row justify="center" no-gutters>
         <v-col cols="12" class="mb-4">
+          <!-- MDI Icons (Facebook, Twitter, Instagram) -->
           <v-btn
-            v-for="icon in ['mdi-facebook', 'mdi-twitter', 'mdi-instagram', 'mdi-tiktok']"
+            v-for="icon in mdiIcons"
             :key="icon"
             class="mx-2"
             icon
@@ -95,6 +96,18 @@
             @mouseleave="hoverIcon = ''"
           >
             <v-icon>{{ icon }}</v-icon>
+          </v-btn>
+          <!-- TikTok SVG Image -->
+          <v-btn
+            class="mx-2"
+            icon
+            variant="text"
+            color="black"
+            :class="{ 'scale-110': hoverIcon === 'tiktok' }"
+            @mouseover="hoverIcon = 'tiktok'"
+            @mouseleave="hoverIcon = ''"
+          >
+            <img src="@/assets/tiktok.svg" alt="TikTok Logo" class="social-icon" />
           </v-btn>
         </v-col>
         <v-col cols="12">
@@ -108,28 +121,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'MainLayout',
   setup() {
-    const drawer = ref(false)
-    const hoverIcon = ref('')
+    const drawer = ref(false);
+    const hoverIcon = ref('');
     const menuItems = [
       { title: 'Home', path: '/', icon: 'mdi-home' },
       { title: 'About', path: '/about', icon: 'mdi-information' },
       { title: 'Vendors', path: '/vendors', icon: 'mdi-store' },
       { title: 'Become a Vendor', path: '/become-a-vendor', icon: 'mdi-plus-box' },
-      { title: 'Contact', path: '/contact', icon: 'mdi-email' }
-    ]
+      { title: 'Contact', path: '/contact', icon: 'mdi-email' },
+    ];
+    const mdiIcons = ['mdi-facebook', 'mdi-twitter', 'mdi-instagram'];
 
     return {
       drawer,
       hoverIcon,
-      menuItems
-    }
-  }
-})
+      menuItems,
+      mdiIcons,
+    };
+  },
+});
 </script>
 
 <style scoped>
@@ -164,5 +179,13 @@ export default defineComponent({
 
 .hover\:text-gray-600:hover {
   color: #666;
+}
+
+/* Style TikTok SVG to match MDI icons */
+.social-icon {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  transition: transform 0.3s ease; /* Match hover effect */
 }
 </style>
