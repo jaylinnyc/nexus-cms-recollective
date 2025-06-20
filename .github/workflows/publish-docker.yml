@@ -40,6 +40,16 @@ jobs:
           tags: |
             docker.goodgermy.com/nexus/recollective-frontend:latest
 
+      - name: Build and push cms image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./strapi
+          file: ./strapi/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            docker.goodgermy.com/nexus/recollective-strapi:latest
+
       - name: Build and push image-resizer image
         uses: docker/build-push-action@v4
         with:
