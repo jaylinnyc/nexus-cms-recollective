@@ -90,9 +90,7 @@ services:
       - "8080"
 
   rc-strapi:
-    build:
-      context: ./strapi
-      dockerfile: Dockerfile
+    image: docker.goodgermy.com/nexus/recollective-strapi:latest
     container_name: rc-strapi
     env_file:
       - .env.production.strapi
@@ -119,7 +117,7 @@ services:
       - "traefik.http.routers.rc-strapi.tls=true"
       - "traefik.http.routers.rc-strapi.tls.certresolver=default-resolver"
       - "traefik.http.services.rc-strapi.loadbalancer.server.port=1337"
-      
+
 networks:
   traefik-net:
     external: true
