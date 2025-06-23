@@ -144,7 +144,8 @@ export default defineComponent({
           photos: vendor.PHOTOS,
           email: vendor.EMAIL,
         }));
-        this.filteredVendors = [...this.vendors];
+        // this.filteredVendors = [...this.vendors];
+        this.filteredVendors = [];
       } catch (err: any) {
         this.error = 'Failed to load vendors from JSON. Please try again later.';
         console.error('Error loading vendors:', err);
