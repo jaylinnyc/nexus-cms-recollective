@@ -92,7 +92,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import axios from 'axios';
 import vendorsData from '@/assets/vendors.json';
 
 interface Vendor {
@@ -131,43 +130,26 @@ export default defineComponent({
       error: null,
     };
   },
-  async created() {
-    await this.loadVendors();
+  created() {
+    this.loadVendors();
   },
   methods: {
-    async loadVendors() {
+    loadVendors() {
       try {
-        // Production: Fetch from Strapi
-        if (import.meta.env.PROD) {
-          const response = await axios.get(`${import.meta.env.VUE_APP_STRAPI_API_URL}/vendors`, {
-            headers: {
-              Authorization: `Bearer ${import.meta.env.VUE_APP_STRAPI_API_TOKEN}`,
-            },
-          });
-          this.vendors = response.data.map((vendor: any) => ({
-            id: vendor.id,
-            business_name: vendor.business_name,
-            ig_handle: vendor.ig_handle,
-            description: vendor.description,
-            photos: vendor.photos,
-            email: vendor.email,
-          }));
-          this.filteredVendors = [...this.vendors]; // Initialize filteredVendors
-        } else {
-          // Development: Use JSON file
-          this.vendors = vendorsData.map((vendor: any, index: number) => ({
-            id: index + 1,
-            business_name: vendor['BUSINESS NAME'],
-            ig_handle: vendor['IG HANDLE'],
-            description: vendor.DESCRIPTION,
-            photos: vendor.PHOTOS,
-            email: vendor.EMAIL,
-          }));
-          this.filteredVendors = [...this.vendors]; // Initialize filteredVendors
-        }
-      } catch (err) {
-        this.error = 'Failed to load vendors. Please try again later.';
-        console.error('Error fetching vendors:', err);
+        this.vendors = vendorsData.map((vendor: any, index: number) => ({
+          id: index + 1,
+          business_name: vendor['BUSINESS NAME'],
+          ig_handle: vendor['IG HANDLE'],
+          description: vendor.DESCRIPTION,
+          photos: vendor.PHOTOS,
+          email: vendor.EMAIL,
+        }));
+        this.filteredVendors = [...this.vendors];
+      } catch (err: any) {
+        this.error = 'Failed to load vendors from JSON. Please try again later.';
+        console.error('Error loading vendors:', err);
+        this.vendors = [];
+        this.filteredVendors = [];
       }
     },
     filterVendors() {
@@ -184,7 +166,7 @@ export default defineComponent({
     },
     handleSortChange(value: string) {
       this.sortOption = value;
-      this.filterVendors(); // Re-run filtering and sorting
+      this.filterVendors();
     },
     sortVendors(filtered: Vendor[]) {
       if (!Array.isArray(filtered)) {
