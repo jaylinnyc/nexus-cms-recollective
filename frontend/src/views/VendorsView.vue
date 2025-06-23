@@ -36,7 +36,7 @@
                 :items="sortOptions"
                 label="Sort by"
                 variant="outlined"
-                @update:modelValue="sortVendors"
+                @update:modelValue="handleSortChange"
               ></v-select>
             </v-col>
           </v-row>
@@ -67,7 +67,7 @@
               </v-col>
               <v-col cols="12" md="6" :order="index % 2 === 0 ? 1 : 2" :order-md="index % 2 === 0 ? 2 : 1" class="d-flex align-center">
                 <v-img
-                  :src="vendor.photos ? `https://media.recollectivect.com/public/${vendor.photos}.jpg` : 'https://media.recollectivect.com/public/vendor_placeholder.jpg'"
+                  :src="vendor.photos ? `https://media.recollectivect.com/public/${encodeURIComponent(vendor.photos)}.jpg` : 'https://media.recollectivect.com/public/vendor_placeholder.jpg'"
                   :alt="vendor.business_name"
                   class="rounded-lg"
                   height="300"
@@ -93,21 +93,42 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import axios from 'axios';
-import vendorsData from '@/assets/vendors.json'; // Import JSON for development
+import vendorsData from '@/assets/vendors.json';
+
+interface Vendor {
+  id: number;
+  business_name: string;
+  ig_handle: string;
+  description: string;
+  photos: string;
+  email: string;
+}
+
+interface SortOption {
+  title: string;
+  value: string;
+}
 
 export default defineComponent({
   name: 'VendorsView',
-  data() {
+  data(): {
+    vendors: Vendor[];
+    filteredVendors: Vendor[];
+    searchQuery: string;
+    sortOption: string;
+    sortOptions: SortOption[];
+    error: string | null;
+  } {
     return {
-      vendors: [] as any[],
-      filteredVendors: [] as any[],
+      vendors: [],
+      filteredVendors: [],
       searchQuery: '',
       sortOption: 'name-asc',
       sortOptions: [
         { title: 'Name (A-Z)', value: 'name-asc' },
         { title: 'Name (Z-A)', value: 'name-desc' },
       ],
-      error: null as string | null,
+      error: null,
     };
   },
   async created() {
@@ -117,10 +138,10 @@ export default defineComponent({
     async loadVendors() {
       try {
         // Production: Fetch from Strapi
-        if (process.env.NODE_ENV === 'production') {
-          const response = await axios.get(`${process.env.VUE_APP_STRAPI_API_URL}/vendors`, {
+        if (import.meta.env.PROD) {
+          const response = await axios.get(`${import.meta.env.VUE_APP_STRAPI_API_URL}/vendors`, {
             headers: {
-              Authorization: `Bearer ${process.env.VUE_APP_STRAPI_API_TOKEN}`,
+              Authorization: `Bearer ${import.meta.env.VUE_APP_STRAPI_API_TOKEN}`,
             },
           });
           this.vendors = response.data.map((vendor: any) => ({
@@ -131,25 +152,26 @@ export default defineComponent({
             photos: vendor.photos,
             email: vendor.email,
           }));
+          this.filteredVendors = [...this.vendors]; // Initialize filteredVendors
         } else {
           // Development: Use JSON file
           this.vendors = vendorsData.map((vendor: any, index: number) => ({
-            id: index + 1, // Assign a fake ID for development
+            id: index + 1,
             business_name: vendor['BUSINESS NAME'],
             ig_handle: vendor['IG HANDLE'],
             description: vendor.DESCRIPTION,
             photos: vendor.PHOTOS,
             email: vendor.EMAIL,
           }));
+          this.filteredVendors = [...this.vendors]; // Initialize filteredVendors
         }
-        this.filterVendors();
       } catch (err) {
         this.error = 'Failed to load vendors. Please try again later.';
         console.error('Error fetching vendors:', err);
       }
     },
     filterVendors() {
-      let filtered = [...this.vendors];
+      let filtered: Vendor[] = [...this.vendors];
       if (this.searchQuery) {
         const query = this.searchQuery.toLowerCase();
         filtered = filtered.filter(
@@ -160,11 +182,20 @@ export default defineComponent({
       }
       this.sortVendors(filtered);
     },
-    sortVendors(filtered = this.filteredVendors) {
+    handleSortChange(value: string) {
+      this.sortOption = value;
+      this.filterVendors(); // Re-run filtering and sorting
+    },
+    sortVendors(filtered: Vendor[]) {
+      if (!Array.isArray(filtered)) {
+        console.warn('sortVendors received non-array input:', filtered);
+        this.filteredVendors = [...this.vendors];
+        return;
+      }
       if (this.sortOption === 'name-asc') {
-        filtered.sort((a, b) => a.business_name.localeCompare(b.business_name));
+        filtered.sort((a: Vendor, b: Vendor) => a.business_name.localeCompare(b.business_name));
       } else if (this.sortOption === 'name-desc') {
-        filtered.sort((a, b) => b.business_name.localeCompare(a.business_name));
+        filtered.sort((a: Vendor, b: Vendor) => b.business_name.localeCompare(a.business_name));
       }
       this.filteredVendors = filtered;
     },
