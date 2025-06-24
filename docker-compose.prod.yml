@@ -107,9 +107,7 @@ services:
       APP_KEYS: ${STRAPI_APP_KEYS}
       NODE_ENV: production
     volumes:
-      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/uploads:/opt/app/public/uploads"
-      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/config:/opt/app/config"
-      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/src:/opt/app/src"
+      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/public/uploads:/opt/app/public/uploads"
     restart: unless-stopped
     networks:
       - traefik-net
