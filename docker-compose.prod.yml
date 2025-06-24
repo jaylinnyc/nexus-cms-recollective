@@ -106,6 +106,13 @@ services:
       API_TOKEN_SALT: ${STRAPI_API_TOKEN_SALT}
       APP_KEYS: ${STRAPI_APP_KEYS}
       NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 1337
+      APP_URL: https://cms.recollectivect.com
+      STRAPI_ADMIN_EMAIL: info@recollectivect.com
+      STRAPI_ADMIN_PASSWORD: nextstep
+      STRAPI_ADMIN_FIRSTNAME: NextStep
+      STRAPI_ADMIN_LASTNAME: Admin
     volumes:
       - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/public/uploads:/opt/app/public/uploads"
     restart: unless-stopped
