@@ -97,15 +97,22 @@ services:
     environment:
       DATABASE_CLIENT: postgres
       DATABASE_HOST: rc-strapi-db
-      DATABASE_NAME: ${DATABASE_NAME}
-      DATABASE_USERNAME: ${DATABASE_USERNAME}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: strapi
+      DATABASE_USERNAME: strapi
+      DATABASE_PASSWORD: Xj9kLm2pQr4tWy8zAb3cDe5fGh7iJk9l
       DATABASE_PORT: 5432
-      JWT_SECRET: ${STRAPI_JWT_SECRET}
-      ADMIN_JWT_SECRET: ${STRAPI_ADMIN_JWT_SECRET}
-      API_TOKEN_SALT: ${STRAPI_API_TOKEN_SALT}
-      APP_KEYS: ${STRAPI_APP_KEYS}
+      JWT_SECRET: 3f9k2m7p8q5r4t6w9x0y1z2a3b4c5d6e7f8g9h0i
+      ADMIN_JWT_SECRET: j4k5l6m7n8p9q0r1s2t3u4v5w6x7y8z9a0b1c2d
+      API_TOKEN_SALT: t2u3v4w5x8y7z8a9b0c1d2e3f4g5h6i7j8k9l0m
+      APP_KEYS: k9m0n1p2q3r4s5t6u7v8w9x0y1z2a3b4,c5d6e7f8g9h0i1j2k3l4m5n6o7p8q9r
       NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 1337
+      APP_URL: https://cms.recollectivect.com
+      STRAPI_ADMIN_EMAIL: info@recollectivect.com
+      STRAPI_ADMIN_PASSWORD: nextstep
+      STRAPI_ADMIN_FIRSTNAME: NextStep
+      STRAPI_ADMIN_LASTNAME: Admin
     volumes:
       - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/public/uploads:/opt/app/public/uploads"
     restart: unless-stopped
