@@ -89,34 +89,76 @@ services:
     expose:
       - "8080"
 
-  # rc-strapi:
-  #   image: docker.goodgermy.com/nexus/recollective-strapi:latest
-  #   container_name: rc-strapi
-  #   env_file:
-  #     - .env.production.strapi
-  #   environment:
-  #     DATABASE_CLIENT: sqlite
-  #     DATABASE_FILENAME: /srv/app/data.db
-  #     STRAPI_ADMIN_URL: "https://cms.recollectivect.com/admin"
-  #     STRAPI_API_URL: "https://cms.recollectivect.com/api"
-  #     JWT_SECRET: ${STRAPI_JWT_SECRET}
-  #     ADMIN_JWT_SECRET: ${STRAPI_ADMIN_JWT_SECRET}
-  #     API_TOKEN_SALT: ${STRAPI_API_TOKEN_SALT}
-  #     APP_KEYS: ${STRAPI_APP_KEYS}
-  #     NODE_ENV: production
-  #   volumes:
-  #     - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi:/srv/app"
-  #   restart: unless-stopped
-  #   networks:
-  #     - traefik-net
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.docker.network=traefik-net"
-  #     - "traefik.http.routers.rc-strapi.rule=Host(`cms.recollectivect.com`)"
-  #     - "traefik.http.routers.rc-strapi.entrypoints=websecure"
-  #     - "traefik.http.routers.rc-strapi.tls=true"
-  #     - "traefik.http.routers.rc-strapi.tls.certresolver=default-resolver"
-  #     - "traefik.http.services.rc-strapi.loadbalancer.server.port=1337"
+  rc-strapi:
+    image: docker.goodgermy.com/strapi:latest
+    container_name: rc-strapi
+    env_file:
+      - .env.production.strapi
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: rc-strapi-db
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_PORT: 5432
+      JWT_SECRET: ${STRAPI_JWT_SECRET}
+      ADMIN_JWT_SECRET: ${STRAPI_ADMIN_JWT_SECRET}
+      API_TOKEN_SALT: ${STRAPI_API_TOKEN_SALT}
+      APP_KEYS: ${STRAPI_APP_KEYS}
+      NODE_ENV: production
+    volumes:
+      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/uploads:/opt/app/public/uploads"
+      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/config:/opt/app/config"
+      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/src:/opt/app/src"
+    restart: unless-stopped
+    networks:
+      - traefik-net
+    depends_on:
+      - rc-strapi-db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-net"
+      - "traefik.http.routers.rc-strapi.rule=Host(`cms.recollectivect.com`)"
+      - "traefik.http.routers.rc-strapi.entrypoints=websecure"
+      - "traefik.http.routers.rc-strapi.tls=true"
+      - "traefik.http.routers.rc-strapi.tls.certresolver=default-resolver"
+      - "traefik.http.services.rc-strapi.loadbalancer.server.port=1337"
+
+  rc-strapi-db:
+    image: postgres:14.5-alpine
+    container_name: rc-strapi-db
+    env_file:
+      - .env.production.strapi
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi-db:/var/lib/postgresql/data"
+    restart: unless-stopped
+    networks:
+      - traefik-net
+    expose:
+      - "5432"
+
+  rc-strapi-adminer:
+    image: adminer:latest
+    container_name: rc-strapi-adminer
+    restart: unless-stopped
+    environment:
+      ADMINER_DEFAULT_SERVER: rc-strapi-db
+    networks:
+      - traefik-net
+    depends_on:
+      - rc-strapi-db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-net"
+      - "traefik.http.routers.rc-strapi-adminer.rule=Host(`adminer.recollectivect.com`)"
+      - "traefik.http.routers.rc-strapi-adminer.entrypoints=websecure"
+      - "traefik.http.routers.rc-strapi-adminer.tls=true"
+      - "traefik.http.routers.rc-strapi-adminer.tls.certresolver=default-resolver"
+      - "traefik.http.services.rc-strapi-adminer.loadbalancer.server.port=8080"
 
 networks:
   traefik-net:
