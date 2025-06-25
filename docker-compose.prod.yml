@@ -108,7 +108,8 @@ services:
       NODE_ENV: production
       HOST: 0.0.0.0
       PORT: 1337
-      APP_URL: https://cms.recollectivect.com
+      # APP_URL: https://cms.recollectivect.com
+      APP_URL: APP_URL: http://localhost:1337
       STRAPI_ADMIN_EMAIL: info@recollectivect.com
       STRAPI_ADMIN_PASSWORD: nextstep
       STRAPI_ADMIN_FIRSTNAME: NextStep
@@ -116,11 +117,12 @@ services:
     volumes:
       - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/public/uploads:/opt/app/public/uploads"
     restart: unless-stopped
-    command: yarn develop
     networks:
       - traefik-net
     depends_on:
       - rc-strapi-db
+    ports:
+      - "1337:1337"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-net"
