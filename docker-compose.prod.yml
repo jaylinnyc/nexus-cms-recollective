@@ -159,7 +159,6 @@ services:
     volumes:
       - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/public/uploads:/opt/app/public/uploads"
       - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/src/api:/opt/app/src/api"
-      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/config:/opt/app/config"
     restart: unless-stopped
     networks:
       - traefik-net
