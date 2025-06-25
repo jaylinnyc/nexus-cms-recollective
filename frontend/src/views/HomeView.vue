@@ -4,10 +4,18 @@
     <transition name="hero-fade" @after-leave="onHeroRemoved">
       <div class="hero-container full-screen-hero" v-if="showHero">
         <div class="hero-background">
-          <img src="https://media.recollectivect.com/public/web%2Fhome-bg%E2%80%93800w.png" alt="Home page Background" class="background-image" />
+          <img
+            src="https://media.recollectivect.com/public/home.jpg"
+            alt="Home page Background"
+            class="background-image"
+          />
           <div class="overlay"></div>
           <div class="logo-container">
-            <img src="/rc-transparent.png" alt="The Recollective Logo" class="animated-logo" />
+            <img
+              src="/rc-transparent.png"
+              alt="The Recollective Logo"
+              class="animated-logo"
+            />
           </div>
         </div>
       </div>
@@ -22,12 +30,20 @@
             <v-row justify="center">
               <v-col cols="12" md="10" lg="8">
                 <div class="pa-8 text-center elevation-4 rounded-lg bg-white">
-                  <h2 class="text-h3 font-weight-bold mb-6 text-black">Our Mission</h2>
+                  <h2 class="text-h3 font-weight-bold mb-6 text-black">
+                    Welcome to The Recollective
+                  </h2>
                   <p class="text-body-1 text-black opacity-90 mb-4">
-                    To cultivate a vibrant hub in Bridgeport, Connecticut, where a curated collection of antique and pre-loved treasures meets a community of passionate vendors, fostering sustainable practices, unique discoveries, and the preservation of history through conscious consumption.
-                  </p>
-                  <p class="text-body-1 text-black opacity-90">
-                    At Recollective, we're dedicated to breathing new life into forgotten objects, creating a dynamic antique warehouse and thrift experience in Bridgeport, CT. Our mission champions sustainability, celebrates the rich stories of the past, and empowers a diverse network of vendors to share their unique finds.
+                    Step into a space where every object tells a story. Housed
+                    in a historic printing press in the heart of Bridgeport, The
+                    Recollective is a curated multivendor marketplace
+                    celebrating the beauty of past vintage, antique, salvaged
+                    and storied goods deserving of a second life. From timeless
+                    furniture and rare finds to eclectic art and soulful pieces,
+                    our market brings together collectors, makers and seekers
+                    under one unforgettable roof. Come get lost in the charm of
+                    yesterday and leave with something that feels just right for
+                    today.
                   </p>
                 </div>
               </v-col>
@@ -36,9 +52,17 @@
 
           <!-- Featured Vendors -->
           <v-container class="py-12 bg-grey-lighten-5">
-            <h2 class="text-h3 font-weight-bold text-center mb-10 text-black">Featured Vendors</h2>
+            <h2 class="text-h3 font-weight-bold text-center mb-10 text-black">
+              Featured
+            </h2>
             <v-row align="center" justify="center">
-              <v-col cols="12" sm="6" md="4" v-for="vendor in vendors" :key="vendor.title">
+              <v-col
+                cols="12"
+                sm="6"
+                md="4"
+                v-for="vendor in vendors"
+                :key="vendor.title"
+              >
                 <vendor-card
                   :title="vendor.title"
                   :description="vendor.description"
@@ -48,18 +72,17 @@
               </v-col>
             </v-row>
             <div class="text-center mt-10">
-              <v-btn color="black" variant="outlined" to="/vendors" size="large" class="rounded-pill px-8">Meet All Vendors</v-btn>
+              <v-btn
+                color="black"
+                variant="outlined"
+                to="/vendors"
+                size="large"
+                class="rounded-pill px-8"
+                >Meet Our Vendors</v-btn
+              >
             </div>
           </v-container>
 
-          <!-- Call to Action -->
-          <v-container class="py-12 text-center bg-black text-white">
-            <h2 class="text-h3 font-weight-bold mb-6">Explore Today</h2>
-            <p class="text-body-1 mb-8 mx-auto" style="max-width: 800px">
-              Discover timeless treasures and connect with our community...
-            </p>
-            <v-btn color="white" variant="outlined" size="large" to="/visit-us" class="rounded-pill px-8">Plan Your Visit</v-btn>
-          </v-container>
         </div>
       </div>
     </transition>
@@ -67,45 +90,67 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
-import VendorCard from '../components/VendorCard.vue'
+import { defineComponent, onMounted, ref } from "vue";
+import VendorCard from "../components/VendorCard.vue";
 
 export default defineComponent({
-  name: 'HomeView',
+  name: "HomeView",
   components: {
-    VendorCard
+    VendorCard,
   },
   setup() {
     const vendors = [
-      { title: 'Vintage Décor & European Finds', description: 'Over 20 years curating...', imageUrl: 'https://media.recollectivect.com/public/web%2Fvendor1–800w.png', link: '/vendors' },
-      { title: 'Modern Art & Local Originals', description: 'Original works and prints...', imageUrl: 'https://media.recollectivect.com/public/web%2Fvendor2–800w.png', link: '/vendors' },
-      { title: 'Curiosities & Rare Treasures', description: 'Vintage signage and forgotten...', imageUrl: 'https://media.recollectivect.com/public/web%2Fvendor3–800w.png', link: '/vendors' },
-    ]
+      {
+        title: "Vintage Décor & European Finds",
+        description: "Over 20 years curating...",
+        imageUrl:
+          "https://media.recollectivect.com/public/web%2Fvendor1–800w.png",
+        link: "/vendors",
+      },
+      {
+        title: "Modern Art & Local Originals",
+        description: "Original works and prints...",
+        imageUrl:
+          "https://media.recollectivect.com/public/web%2Fvendor2–800w.png",
+        link: "/vendors",
+      },
+      {
+        title: "Curiosities & Rare Treasures",
+        description: "Vintage signage and forgotten...",
+        imageUrl:
+          "https://media.recollectivect.com/public/web%2Fvendor3–800w.png",
+        link: "/vendors",
+      },
+    ];
 
-    const showHero = ref(true)
+    const showHero = ref(true);
 
     onMounted(() => {
-      const overlay = document.querySelector('.overlay') as HTMLElement
+      const overlay = document.querySelector(".overlay") as HTMLElement;
       if (overlay) {
-        overlay.style.background = 'rgba(255, 255, 255, 0)'
+        overlay.style.background = "rgba(255, 255, 255, 0)";
         setTimeout(() => {
-          overlay.style.background = 'rgba(255, 255, 255, 1)'
-          overlay.addEventListener('transitionend', () => {
-            console.log('Overlay transition ended, hiding hero')
-            showHero.value = false
-          }, { once: true })
-        }, 100)
+          overlay.style.background = "rgba(255, 255, 255, 1)";
+          overlay.addEventListener(
+            "transitionend",
+            () => {
+              console.log("Overlay transition ended, hiding hero");
+              showHero.value = false;
+            },
+            { once: true }
+          );
+        }, 100);
       }
-    })
+    });
 
     const onHeroRemoved = () => {
-      console.log('Hero removed, scrolling to top')
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
+      console.log("Hero removed, scrolling to top");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
 
-    return { vendors, showHero, onHeroRemoved }
-  }
-})
+    return { vendors, showHero, onHeroRemoved };
+  },
+});
 </script>
 
 <style scoped>

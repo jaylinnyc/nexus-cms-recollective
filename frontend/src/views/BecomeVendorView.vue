@@ -2,7 +2,7 @@
   <div>
     <!-- Become a Vendor Hero -->
     <v-parallax
-      src="https://media.recollectivect.com/public/web%2Fantiques–800w.png"
+      src="https://media.recollectivect.com/public/become_vendor.jpg"
       height="400"
       scale="1.5"
     >
@@ -15,9 +15,9 @@
     <v-container class="py-8">
       <v-row justify="center">
         <v-col cols="12" md="10" lg="8">
-          <p class="text-body-1 mb-6 text-black">
-            Join the vibrant community at The Recollective, a historic 50,000-square-foot marketplace in Bridgeport. We welcome antique dealers, vintage collectors, and local artists to share their passion and treasures with our visitors.
-          </p>
+          <h1>
+            JOIN OUR COMMUNITY
+          </h1>
         </v-col>
       </v-row>
     </v-container>
@@ -28,17 +28,17 @@
         <v-col cols="12" md="10" lg="8">
           <h2 class="text-h4 mb-6 text-black">Application Process</h2>
           <p class="text-body-1 mb-4 text-black">
-            Becoming a vendor at The Recollective is a straightforward process. We seek vendors who align with our mission of offering unique, high-quality items with a story.
+            We aim to make becoming a vendor at The Recollective a straightforward process. We seek vendors offering unique, high-quality items with a story to ensure a cohesive market experience.
           </p>
           <v-list>
             <v-list-item>
-              <v-list-item-title>Submit an online application with details about your inventory and experience.</v-list-item-title>
+              <v-list-item-title><b>Step 1:</b> Submit online application.</v-list-item-title>
             </v-list-item>
             <v-list-item>
-              <v-list-item-title>Review by our vendor committee to ensure a diverse and cohesive market.</v-list-item-title>
+              <v-list-item-title><b>Step 2:</b> Review and approval.</v-list-item-title>
             </v-list-item>
             <v-list-item>
-              <v-list-item-title>Approval and booth assignment, with support for setup and marketing.</v-list-item-title>
+              <v-list-item-title><b>Step 3:</b> Booth assignment and onboarding.</v-list-item-title>
             </v-list-item>
           </v-list>
           <div class="text-center mt-6">
@@ -56,30 +56,7 @@
       </v-row>
     </v-container>
 
-    <!-- Vendor Expectations -->
-    <v-container class="py-8 bg-grey-lighten-4">
-      <v-row justify="center">
-        <v-col cols="12" md="10" lg="8">
-          <h2 class="text-h4 mb-6 text-black">Vendor Expectations</h2>
-          <p class="text-body-1 mb-4 text-black">
-            We value a collaborative and professional environment. Vendors are expected to:
-          </p>
-          <v-list>
-            <v-list-item>
-              <v-list-item-title>Maintain high-quality, curated inventory.</v-list-item-title>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-title>Adhere to market hours and setup guidelines.</v-list-item-title>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-title>Participate in at least one community event per year.</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-col>
-      </v-row>
-    </v-container>
 
-    
     <!-- Vendor Form Dialog -->
     <v-dialog
       v-model="showVendorForm"
