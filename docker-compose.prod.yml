@@ -116,6 +116,7 @@ services:
     volumes:
       - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/public/uploads:/opt/app/public/uploads"
     restart: unless-stopped
+    command: yarn develop
     networks:
       - traefik-net
     depends_on:
