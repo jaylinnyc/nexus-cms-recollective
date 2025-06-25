@@ -114,7 +114,11 @@ services:
       STRAPI_ADMIN_FIRSTNAME: NextStep
       STRAPI_ADMIN_LASTNAME: Admin
     volumes:
-      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/app:/opt/app"
+      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/src:/opt/app/src"
+      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/config:/opt/app/config"
+      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/package.json:/opt/package.json"
+      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/yarn.lock:/opt/yarn.lock"
+      - "${MY_DOCKER_DATA_PATH:-~/mydata}/nexus/recollective/rc-strapi/.env:/opt/app/.env"
     restart: unless-stopped
     networks:
       - traefik-net
