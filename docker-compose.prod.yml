@@ -90,7 +90,7 @@ services:
       - "8080"
 
   rc-strapi:
-    image: docker.goodgermy.com/strapi:dev-latest
+    image: docker.goodgermy.com/strapi:latest
     container_name: rc-strapi
     env_file:
       - .env.production.strapi
