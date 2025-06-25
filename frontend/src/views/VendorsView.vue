@@ -2,7 +2,7 @@
   <div>
     <!-- Vendors Hero -->
     <v-parallax
-      src="https://media.recollectivect.com/public/web%2Fantiques–800w.png"
+      src="https://media.recollectivect.com/public/vendor.jpg"
       height="400"
       scale="1.5"
     >

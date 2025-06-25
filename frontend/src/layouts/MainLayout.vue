@@ -83,19 +83,35 @@
     >
       <v-row justify="center" no-gutters>
         <v-col cols="12" class="mb-4">
-          <!-- MDI Icons (Facebook, Twitter, Instagram) -->
+          <!-- MDI Icons (Facebook, Twitter) -->
           <v-btn
             v-for="icon in mdiIcons"
-            :key="icon"
+            :key="icon.icon"
             class="mx-2"
             icon
             variant="text"
             color="black"
-            :class="{ 'scale-110': hoverIcon === icon }"
-            @mouseover="hoverIcon = icon"
+            :href="icon.href"
+            target="_blank"
+            :class="{ 'scale-110': hoverIcon === icon.icon }"
+            @mouseover="hoverIcon = icon.icon"
             @mouseleave="hoverIcon = ''"
           >
-            <v-icon>{{ icon }}</v-icon>
+            <v-icon>{{ icon.icon }}</v-icon>
+          </v-btn>
+          <!-- Instagram -->
+          <v-btn
+            class="mx-2"
+            icon
+            variant="text"
+            color="black"
+            href="https://www.instagram.com/therecollectivect"
+            target="_blank"
+            :class="{ 'scale-110': hoverIcon === 'mdi-instagram' }"
+            @mouseover="hoverIcon = 'mdi-instagram'"
+            @mouseleave="hoverIcon = ''"
+          >
+            <v-icon>mdi-instagram</v-icon>
           </v-btn>
           <!-- TikTok SVG Image -->
           <v-btn
@@ -103,6 +119,8 @@
             icon
             variant="text"
             color="black"
+            href="https://www.tiktok.com/@therecollectivect"
+            target="_blank"
             :class="{ 'scale-110': hoverIcon === 'tiktok' }"
             @mouseover="hoverIcon = 'tiktok'"
             @mouseleave="hoverIcon = ''"
@@ -135,7 +153,10 @@ export default defineComponent({
       { title: 'Become a Vendor', path: '/become-a-vendor', icon: 'mdi-plus-box' },
       { title: 'Contact', path: '/contact', icon: 'mdi-email' },
     ];
-    const mdiIcons = ['mdi-facebook', 'mdi-twitter', 'mdi-instagram'];
+    const mdiIcons = [
+      { icon: 'mdi-facebook', href: '#' },
+      { icon: 'mdi-twitter', href: '#' }
+    ];
 
     return {
       drawer,
@@ -187,5 +208,6 @@ export default defineComponent({
   height: 24px;
   vertical-align: middle;
   transition: transform 0.3s ease; /* Match hover effect */
+  pointer-events: none; /* Prevent img from blocking click events */
 }
 </style>

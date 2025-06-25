@@ -21,7 +21,7 @@
         :to="link"
         class="ml-2"
       >
-        Learn More
+        Discover More
       </v-btn>
     </v-card-actions>
   </v-card>
