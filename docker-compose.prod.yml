@@ -119,6 +119,8 @@ services:
     restart: unless-stopped
     networks:
       - traefik-net
+    ports:
+       - "1337:1337"
     depends_on:
       - rc-strapi-db
     labels:
