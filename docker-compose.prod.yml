@@ -132,8 +132,6 @@ services:
   rc-strapi:
     image: docker.goodgermy.com/strapi:latest
     container_name: rc-strapi
-    env_file:
-      - .env.development.strapi
     environment:
       NODE_ENV: development
       DATABASE_CLIENT: postgres
