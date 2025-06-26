@@ -104,21 +104,21 @@ export default defineComponent({
         title: "Vintage Décor & European Finds",
         description: "Over 20 years curating...",
         imageUrl:
-          "https://media.recollectivect.com/public/web%2Fvendor1–800w.png",
+          "https://media.recollectivect.com/public/home_feat_left.jpg",
         link: "/vendors",
       },
       {
         title: "Modern Art & Local Originals",
         description: "Original works and prints...",
         imageUrl:
-          "https://media.recollectivect.com/public/web%2Fvendor2–800w.png",
+          "https://media.recollectivect.com/public/home_feat_middle.jpg",
         link: "/vendors",
       },
       {
         title: "Curiosities & Rare Treasures",
         description: "Vintage signage and forgotten...",
         imageUrl:
-          "https://media.recollectivect.com/public/web%2Fvendor3–800w.png",
+          "https://media.recollectivect.com/public/home_feat_right.jpg",
         link: "/vendors",
       },
     ];
