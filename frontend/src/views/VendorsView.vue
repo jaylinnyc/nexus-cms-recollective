@@ -2,7 +2,7 @@
   <div>
     <!-- Vendors Hero -->
     <v-parallax
-      src="https://media.recollectivect.com/public/vendor.jpg"
+      src="https://media.recollectivect.com/public/vendors.jpg"
       height="400"
       scale="1.5"
     >
