@@ -101,22 +101,22 @@ export default defineComponent({
   setup() {
     const vendors = [
       {
-        title: "Vintage Décor & European Finds",
-        description: "Over 20 years curating...",
+        title: "",
+        description: "",
         imageUrl:
           "https://media.recollectivect.com/public/home_feat_left.jpg",
         link: "/vendors",
       },
       {
-        title: "Modern Art & Local Originals",
-        description: "Original works and prints...",
+        title: "",
+        description: "",
         imageUrl:
           "https://media.recollectivect.com/public/home_feat_middle.jpg",
         link: "/vendors",
       },
       {
-        title: "Curiosities & Rare Treasures",
-        description: "Vintage signage and forgotten...",
+        title: "",
+        description: "",
         imageUrl:
           "https://media.recollectivect.com/public/home_feat_right.jpg",
         link: "/vendors",
