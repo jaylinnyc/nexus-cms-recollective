@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "become_vendors",
+  "info": {
+    "singularName": "become-vendor",
+    "pluralName": "become-vendors",
+    "displayName": "BecomeVendorPage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "ApplicationProcess": {
+      "type": "text"
+    }
+  }
+}

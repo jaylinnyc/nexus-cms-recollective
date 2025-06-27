@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "vendor_pages",
+  "info": {
+    "singularName": "vendor-page",
+    "pluralName": "vendor-pages",
+    "displayName": "VendorPage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Introduction": {
+      "type": "text"
+    }
+  }
+}
