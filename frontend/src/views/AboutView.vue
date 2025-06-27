@@ -9,7 +9,6 @@
       <div
         class="d-flex flex-column fill-height justify-center align-center text-white"
       >
-        <h1 class="text-h3 font-weight-bold">About Us</h1>
       </div>
     </v-parallax>
 
