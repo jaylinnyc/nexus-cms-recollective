@@ -7,7 +7,6 @@
       scale="1.5"
     >
       <div class="d-flex flex-column fill-height justify-center align-center text-white">
-        <h1 class="text-h3 font-weight-bold">Become a Vendor</h1>
       </div>
     </v-parallax>
 

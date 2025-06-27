@@ -9,18 +9,6 @@
       <div
         class="d-flex flex-column fill-height justify-center align-center text-white text-center px-4"
       >
-        <h1
-          class="text-h4 font-weight-bold mb-2"
-          :class="{ 'text-h5': $vuetify.display.xs }"
-        >
-          Contact Us
-        </h1>
-        <p
-          class="text-body-1 text-white-70"
-          :class="{ 'text-body-2': $vuetify.display.xs }"
-        >
-          Connect with our community today
-        </p>
       </div>
     </v-parallax>
 
