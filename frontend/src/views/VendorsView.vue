@@ -50,24 +50,24 @@
           <v-col cols="12" md="10" lg="8">
             <v-row>
               <v-col cols="12" md="6" :order="index % 2 === 0 ? 2 : 1" :order-md="index % 2 === 0 ? 1 : 2">
-                <h2 class="text-h4 mb-4 text-black">{{ vendor.business_name }}</h2>
+                <h2 class="text-h4 mb-4 text-black">{{ vendor.BusinessName }}</h2>
                 <p class="text-body-1 mb-4 text-justify text-black">
-                  {{ vendor.description }}
+                  {{ extractDescription(vendor.Description) }}
                 </p>
                 <h3 class="text-h6 mb-2 text-black">Contact:</h3>
                 <v-list>
-                  <v-list-item v-if="vendor.email">
-                    <v-list-item-title>Email: {{ vendor.email }}</v-list-item-title>
+                  <v-list-item v-if="vendor.Email">
+                    <v-list-item-title>Email: {{ vendor.Email }}</v-list-item-title>
                   </v-list-item>
-                  <v-list-item v-if="vendor.ig_handle">
-                    <v-list-item-title>Instagram: {{ vendor.ig_handle }}</v-list-item-title>
+                  <v-list-item v-if="vendor.IGHandle">
+                    <v-list-item-title>Instagram: {{ vendor.IGHandle }}</v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-col>
               <v-col cols="12" md="6" :order="index % 2 === 0 ? 1 : 2" :order-md="index % 2 === 0 ? 2 : 1" class="d-flex align-center">
                 <v-img
-                  :src="vendor.photos ? `https://media.recollectivect.com/public/${encodeURIComponent(vendor.photos)}.jpg` : 'https://media.recollectivect.com/public/vendor_placeholder.jpg'"
-                  :alt="vendor.business_name"
+                  :src="vendor.CoverImage ? `https://cms.recollectivect.com${vendor.CoverImage.url}` : 'https://media.recollectivect.com/public/vendor_placeholder.jpg'"
+                  :alt="vendor.BusinessName"
                   class="rounded-lg"
                   height="300"
                 ></v-img>
@@ -91,15 +91,33 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import vendorsData from '@/assets/vendors.json';
+import axios from 'axios';
+
+interface DescriptionNode {
+  type: string;
+  children: { text: string; type: string }[];
+}
+
+interface Media {
+  id: number;
+  name: string;
+  url: string;
+  formats?: {
+    thumbnail?: { url: string };
+    [key: string]: any;
+  };
+}
 
 interface Vendor {
   id: number;
-  business_name: string;
-  ig_handle: string;
-  description: string;
-  photos: string;
-  email: string;
+  BusinessName: string;
+  Email: string | null;
+  IGHandle: string | null;
+  Description: DescriptionNode[];
+  Active: boolean;
+  StartDate: string;
+  Phone: string | null;
+  CoverImage: Media | null;
 }
 
 interface SortOption {
@@ -133,24 +151,32 @@ export default defineComponent({
     this.loadVendors();
   },
   methods: {
-    loadVendors() {
+    async loadVendors() {
       try {
-        this.vendors = vendorsData.map((vendor: any, index: number) => ({
-          id: index + 1,
-          business_name: vendor['BUSINESS NAME'],
-          ig_handle: vendor['IG HANDLE'],
-          description: vendor.DESCRIPTION,
-          photos: vendor.PHOTOS,
-          email: vendor.EMAIL,
-        }));
-        // this.filteredVendors = [...this.vendors];
-        this.filteredVendors = [];
+        const response = await axios.get('https://cms.recollectivect.com/api/vendors?populate=CoverImage&filters[Active][$eq]=true', {
+          headers: {
+            Authorization: `Bearer ffd1ecc6d7e6412700902194d78a066135b008d66ee965c713a2fb7199e8b70b6c2e2b361672f452fceb5ec1829a5b94f94084eca3489879be0df6354ec871e8e9c644456c04ce9e7811ae8878981ec85cc1873cf1176f642fcb1ee729a41ab7c127bf6367625e04e9af8e7194913a94974f291021c5780c161c830f8f346e0b`,
+          },
+        });
+        this.vendors = response.data.data;
+        this.filteredVendors = [...this.vendors];
       } catch (err: any) {
-        this.error = 'Failed to load vendors from JSON. Please try again later.';
+        this.error = 'Failed to load vendors from CMS. Please try again later.';
         console.error('Error loading vendors:', err);
         this.vendors = [];
         this.filteredVendors = [];
       }
+    },
+    extractDescription(description: DescriptionNode[]): string {
+      if (!description || !Array.isArray(description)) return '';
+      return description
+        .map((node) =>
+          node.children
+            .filter((child) => child.type === 'text')
+            .map((child) => child.text)
+            .join('')
+        )
+        .join(' ');
     },
     filterVendors() {
       let filtered: Vendor[] = [...this.vendors];
@@ -158,8 +184,8 @@ export default defineComponent({
         const query = this.searchQuery.toLowerCase();
         filtered = filtered.filter(
           (vendor) =>
-            vendor.business_name.toLowerCase().includes(query) ||
-            vendor.description.toLowerCase().includes(query)
+            (vendor.BusinessName && vendor.BusinessName.toLowerCase().includes(query)) ||
+            this.extractDescription(vendor.Description).toLowerCase().includes(query)
         );
       }
       this.sortVendors(filtered);
@@ -175,9 +201,9 @@ export default defineComponent({
         return;
       }
       if (this.sortOption === 'name-asc') {
-        filtered.sort((a: Vendor, b: Vendor) => a.business_name.localeCompare(b.business_name));
+        filtered.sort((a: Vendor, b: Vendor) => (a.BusinessName || '').localeCompare(b.BusinessName || ''));
       } else if (this.sortOption === 'name-desc') {
-        filtered.sort((a: Vendor, b: Vendor) => b.business_name.localeCompare(a.business_name));
+        filtered.sort((a: Vendor, b: Vendor) => (b.BusinessName || '').localeCompare(a.BusinessName || ''));
       }
       this.filteredVendors = filtered;
     },
