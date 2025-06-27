@@ -19,7 +19,7 @@
         color="black"
         variant="text"
         :to="link"
-        class="ml-2"
+        class="mx-auto"
       >
         Discover More
       </v-btn>
