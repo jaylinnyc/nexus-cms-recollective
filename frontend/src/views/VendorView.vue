@@ -272,16 +272,19 @@ export default defineComponent({
   methods: {
     async loadVendor() {
       this.loading = true;
+      this.error = null;
       try {
         const documentId = this.$route.params.documentId;
+        console.log('Fetching vendor with documentId:', documentId); // Debug log
         const response = await axios.get(
-          `https://cms.recollectivect.com/api/vendors/${documentId}?populate[0]=CoverImage&populate[1]=Photos`,
+          `https://cms.recollectivect.com/api/vendors/${documentId}?populate[0]=CoverImage`, // Removed populate[1]=Photos to avoid 404 until field is added
           {
             headers: {
               Authorization: `Bearer ffd1ecc6d7e6412700902194d78a066135b008d66ee965c713a2fb7199e8b70b6c2e2b361672f452fceb5ec1829a5b94f94084eca3489879be0df6354ec871e8e9c644456c04ce9e7811ae8878981ec85cc1873cf1176f642fcb1ee729a41ab7c127bf6367625e04e9af8e7194913a94974f291021c5780c161c830f8f346e0b`,
             },
           }
         );
+        console.log('API response:', response.data); // Debug log
         this.vendor = response.data.data;
         if (!this.vendor) {
           throw new Error('Vendor not found');
@@ -300,6 +303,7 @@ export default defineComponent({
         this.vendor = null;
       } finally {
         this.loading = false;
+        console.log('Loading state:', this.loading); // Debug log
       }
     },
     extractDescription(description: DescriptionNode[] | undefined): string {
