@@ -1,27 +1,18 @@
-# Use Node.js 18 as the base image
-FROM node:18
+FROM node:18-alpine
+# Installing libvips-dev for sharp Compatibility
+RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev nasm bash vips-dev
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
 
-# Set working directory
-WORKDIR /app
+WORKDIR /opt/
+COPY package.json yarn.lock ./
+RUN yarn config set network-timeout 600000 -g && yarn install
 
-# Copy package.json and yarn.lock (if using yarn)
-COPY package.json ./
-COPY yarn.lock ./
-
-# Install dependencies
-RUN yarn install --frozen-lockfile
-
-# Copy Strapi project files
+WORKDIR /opt/app
 COPY . .
-
-# Install Strapi v4.25.15 specifically
-RUN yarn add @strapi/strapi@4.25.15
-
-# Build admin panel
-RUN yarn build
-
-# Expose Strapi port
+ENV PATH /opt/node_modules/.bin:$PATH
+RUN chown -R node:node /opt/app
+USER node
+RUN ["yarn", "build"]
 EXPOSE 1337
-
-# Start Strapi
-CMD ["yarn", "start"]
+CMD ["yarn", "develop"]
