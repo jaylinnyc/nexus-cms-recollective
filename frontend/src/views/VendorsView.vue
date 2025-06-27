@@ -94,8 +94,23 @@
       </v-container>
     </template>
 
+    <!-- Pagination Controls -->
+    <v-container class="py-8 text-center" v-if="pageCount > 1">
+      <v-pagination
+        v-model="currentPage"
+        :length="pageCount"
+        :total-visible="7"
+        rounded="circle"
+        color="primary"
+        @update:modelValue="loadVendors"
+      ></v-pagination>
+    </v-container>
+
     <!-- Loading or Error State -->
-    <v-container v-if="!filteredVendors.length && !error" class="py-8 text-center">
+    <v-container v-if="!filteredVendors.length && !error && !loading" class="py-8 text-center">
+      <p class="text-body-1 text-black">No vendors found.</p>
+    </v-container>
+    <v-container v-if="loading" class="py-8 text-center">
       <p class="text-body-1 text-black">Loading vendors...</p>
     </v-container>
     <v-container v-if="error" class="py-8 text-center">
@@ -141,6 +156,13 @@ interface SortOption {
   value: string;
 }
 
+interface PaginationMeta {
+  page: number;
+  pageSize: number;
+  pageCount: number;
+  total: number;
+}
+
 export default defineComponent({
   name: 'VendorsView',
   data(): {
@@ -150,6 +172,11 @@ export default defineComponent({
     sortOption: string;
     sortOptions: SortOption[];
     error: string | null;
+    loading: boolean;
+    currentPage: number;
+    pageSize: number;
+    pageCount: number;
+    total: number;
   } {
     return {
       vendors: [],
@@ -161,6 +188,11 @@ export default defineComponent({
         { title: 'Name (Z-A)', value: 'name-desc' },
       ],
       error: null,
+      loading: false,
+      currentPage: 1,
+      pageSize: 10, // Default page size
+      pageCount: 1,
+      total: 0,
     };
   },
   created() {
@@ -168,22 +200,45 @@ export default defineComponent({
   },
   methods: {
     async loadVendors() {
+      this.loading = true;
       try {
+        let query = `pagination[page]=${this.currentPage}&pagination[pageSize]=${this.pageSize}&populate[0]=CoverImage&filters[Active][$eq]=true`;
+
+        // Add search filters
+        if (this.searchQuery) {
+          const search = encodeURIComponent(this.searchQuery);
+          query += `&filters[$or][0][BusinessName][$containsi]=${search}&filters[$or][1][Description][$containsi]=${search}`;
+        }
+
+        // Add sort parameter
+        if (this.sortOption === 'name-asc') {
+          query += `&sort[0]=BusinessName:asc`;
+        } else if (this.sortOption === 'name-desc') {
+          query += `&sort[0]=BusinessName:desc`;
+        }
+
         const response = await axios.get(
-          'https://cms.recollectivect.com/api/vendors?populate[0]=CoverImage&filters[Active][$eq]=true',
+          `https://cms.recollectivect.com/api/vendors?${query}`,
           {
             headers: {
               Authorization: `Bearer ffd1ecc6d7e6412700902194d78a066135b008d66ee965c713a2fb7199e8b70b6c2e2b361672f452fceb5ec1829a5b94f94084eca3489879be0df6354ec871e8e9c644456c04ce9e7811ae8878981ec85cc1873cf1176f642fcb1ee729a41ab7c127bf6367625e04e9af8e7194913a94974f291021c5780c161c830f8f346e0b`,
             },
           }
         );
+
         this.vendors = response.data.data;
         this.filteredVendors = [...this.vendors];
+        this.pageCount = response.data.meta.pagination.pageCount;
+        this.total = response.data.meta.pagination.total;
       } catch (err: any) {
         this.error = 'Failed to load vendors from CMS. Please try again later.';
         console.error('Error loading vendors:', err);
         this.vendors = [];
         this.filteredVendors = [];
+        this.pageCount = 1;
+        this.total = 0;
+      } finally {
+        this.loading = false;
       }
     },
     extractDescription(description: DescriptionNode[]): string {
@@ -198,33 +253,12 @@ export default defineComponent({
         .join(' ');
     },
     filterVendors() {
-      let filtered: Vendor[] = [...this.vendors];
-      if (this.searchQuery) {
-        const query = this.searchQuery.toLowerCase();
-        filtered = filtered.filter(
-          (vendor) =>
-            (vendor.BusinessName && vendor.BusinessName.toLowerCase().includes(query)) ||
-            this.extractDescription(vendor.Description).toLowerCase().includes(query)
-        );
-      }
-      this.sortVendors(filtered);
+      this.currentPage = 1; // Reset to first page on new search
+      this.loadVendors();
     },
-    handleSortChange(value: string) {
-      this.sortOption = value;
-      this.filterVendors();
-    },
-    sortVendors(filtered: Vendor[]) {
-      if (!Array.isArray(filtered)) {
-        console.warn('sortVendors received non-array input:', filtered);
-        this.filteredVendors = [...this.vendors];
-        return;
-      }
-      if (this.sortOption === 'name-asc') {
-        filtered.sort((a: Vendor, b: Vendor) => (a.BusinessName || '').localeCompare(b.BusinessName || ''));
-      } else if (this.sortOption === 'name-desc') {
-        filtered.sort((a: Vendor, b: Vendor) => (b.BusinessName || '').localeCompare(a.BusinessName || ''));
-      }
-      this.filteredVendors = filtered;
+    handleSortChange() {
+      this.currentPage = 1; // Reset to first page on sort change
+      this.loadVendors();
     },
   },
 });
