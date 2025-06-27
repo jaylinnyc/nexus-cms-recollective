@@ -221,7 +221,7 @@ export default defineComponent({
       error: null,
       loading: false,
       currentPage: 1,
-      pageSize: 10, // Default page size
+      pageSize: 10,
       pageCount: 1,
       total: 0,
     };
@@ -230,7 +230,7 @@ export default defineComponent({
     this.loadVendors();
   },
   methods: {
-    debouncedFilterVendors: debounce(() => {
+    debouncedFilterVendors: debounce(function (this: any) {
       this.filterVendors();
     }, 300),
     async loadVendors() {
@@ -242,13 +242,11 @@ export default defineComponent({
       try {
         let query = `pagination[page]=${this.currentPage}&pagination[pageSize]=${this.pageSize}&populate[0]=CoverImage&filters[Active][$eq]=true`;
 
-        // Add search filters
         if (this.searchQuery) {
           const search = encodeURIComponent(this.searchQuery);
           query += `&filters[$or][0][BusinessName][$containsi]=${search}&filters[$or][1][Description][$containsi]=${search}`;
         }
 
-        // Add sort parameter
         if (this.sortOption === "name-asc") {
           query += `&sort[0]=BusinessName:asc`;
         } else if (this.sortOption === "name-desc") {
@@ -267,7 +265,6 @@ export default defineComponent({
 
         console.log("API response:", response.data);
 
-        // Validate response
         if (!response.data || !Array.isArray(response.data.data)) {
           throw new Error(
             "Invalid response format: data is missing or not an array"
@@ -311,16 +308,16 @@ export default defineComponent({
         .join(" ");
     },
     filterVendors() {
-      this.currentPage = 1; // Reset to first page on search
+      this.currentPage = 1;
       this.loadVendors();
     },
     clearSearch() {
-      this.searchQuery = ""; // Clear search query
-      this.currentPage = 1; // Reset to first page
-      this.loadVendors(); // Fetch all vendors
+      this.searchQuery = "";
+      this.currentPage = 1;
+      this.loadVendors();
     },
     handleSortChange() {
-      this.currentPage = 1; // Reset to first page on sort change
+      this.currentPage = 1;
       this.loadVendors();
     },
   },
