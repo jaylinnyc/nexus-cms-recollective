@@ -17,7 +17,7 @@
           class="text-h3 font-weight-bold mb-4"
           :class="{ 'text-h4': $vuetify.display.smAndDown }"
         >
-          {{ vendor?.BusinessName || 'Vendor' }}
+          {{ vendor?.BusinessName || "Vendor" }}
         </h1>
       </div>
     </v-parallax>
@@ -27,7 +27,12 @@
       <v-row justify="center">
         <v-col cols="12" md="10" lg="8">
           <!-- Description Section -->
-          <v-card elevation="2" class="pa-6 pa-md-8 mb-8" rounded="lg" v-if="vendor">
+          <v-card
+            elevation="2"
+            class="pa-6 pa-md-8 mb-8"
+            rounded="lg"
+            v-if="vendor"
+          >
             <h2 class="text-h4 font-weight-bold mb-4 text-black">
               About {{ vendor.BusinessName }}
             </h2>
@@ -37,7 +42,12 @@
           </v-card>
 
           <!-- Photo Gallery -->
-          <v-card elevation="2" class="pa-6 pa-md-8 mb-8" rounded="lg" v-if="Array.isArray(vendor?.Photos) && vendor.Photos.length > 0">
+          <v-card
+            elevation="2"
+            class="pa-6 pa-md-8 mb-8"
+            rounded="lg"
+            v-if="Array.isArray(vendor?.Photos) && vendor.Photos.length > 0"
+          >
             <h2 class="text-h4 font-weight-bold mb-6 text-black">Gallery</h2>
             <v-row>
               <v-col
@@ -58,8 +68,15 @@
               </v-col>
             </v-row>
           </v-card>
-          <v-card elevation="2" class="pa-6 pa-md-8 mb-8" rounded="lg" v-else-if="!loading && !error">
-            <p class="text-body-1 text-black">No photos available for this vendor.</p>
+          <v-card
+            elevation="2"
+            class="pa-6 pa-md-8 mb-8"
+            rounded="lg"
+            v-else-if="!loading && !error"
+          >
+            <p class="text-body-1 text-black">
+              No photos available for this vendor.
+            </p>
           </v-card>
 
           <!-- Full-Screen Gallery Dialog -->
@@ -76,7 +93,9 @@
               <v-carousel
                 v-model="selectedPhotoIndex"
                 hide-delimiters
-                :show-arrows="vendor?.Photos && vendor.Photos.length > 1"
+                :show-arrows="
+                  Array.isArray(vendor?.Photos) && vendor.Photos.length > 1
+                "
                 height="80vh"
               >
                 <v-carousel-item
@@ -91,28 +110,51 @@
           </v-dialog>
 
           <!-- Contact Section -->
-          <v-card elevation="2" class="pa-6 pa-md-8 mb-8" rounded="lg" v-if="vendor">
+          <v-card
+            elevation="2"
+            class="pa-6 pa-md-8 mb-8"
+            rounded="lg"
+            v-if="vendor"
+          >
             <h2 class="text-h4 font-weight-bold mb-6 text-black">Contact</h2>
             <v-list bg-color="transparent">
               <v-list-item v-if="vendor.Email" class="mb-4">
                 <template v-slot:prepend>
-                  <v-icon icon="mdi-email" color="primary" class="mr-3"></v-icon>
+                  <v-icon
+                    icon="mdi-email"
+                    color="primary"
+                    class="mr-3"
+                  ></v-icon>
                 </template>
-                <v-list-item-title class="font-weight-bold">Email</v-list-item-title>
+                <v-list-item-title class="font-weight-bold"
+                  >Email</v-list-item-title
+                >
                 <v-list-item-subtitle>
-                  <a :href="`mailto:${vendor.Email}`" class="text-decoration-none">
+                  <a
+                    :href="`mailto:${vendor.Email}`"
+                    class="text-decoration-none"
+                  >
                     {{ vendor.Email }}
                   </a>
                 </v-list-item-subtitle>
               </v-list-item>
               <v-list-item v-if="vendor.IGHandle" class="mb-4">
                 <template v-slot:prepend>
-                  <v-icon icon="mdi-instagram" color="primary" class="mr-3"></v-icon>
+                  <v-icon
+                    icon="mdi-instagram"
+                    color="primary"
+                    class="mr-3"
+                  ></v-icon>
                 </template>
-                <v-list-item-title class="font-weight-bold">Instagram</v-list-item-title>
+                <v-list-item-title class="font-weight-bold"
+                  >Instagram</v-list-item-title
+                >
                 <v-list-item-subtitle>
                   <a
-                    :href="`https://www.instagram.com/${vendor.IGHandle.replace('@', '')}`"
+                    :href="`https://www.instagram.com/${vendor.IGHandle.replace(
+                      '@',
+                      ''
+                    )}`"
                     target="_blank"
                     class="text-decoration-none"
                   >
@@ -124,12 +166,19 @@
           </v-card>
 
           <!-- Share Section -->
-          <v-card elevation="2" class="pa-6 pa-md-8 mb-8" rounded="lg" v-if="vendor">
+          <v-card
+            elevation="2"
+            class="pa-6 pa-md-8 mb-8"
+            rounded="lg"
+            v-if="vendor"
+          >
             <h2 class="text-h4 font-weight-bold mb-6 text-black">Share</h2>
             <div class="d-flex flex-wrap gap-2 justify-center">
               <!-- Facebook Share -->
               <v-btn
-                :href="`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`"
+                :href="`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                  shareUrl
+                )}`"
                 target="_blank"
                 icon
                 variant="outlined"
@@ -140,7 +189,9 @@
               </v-btn>
               <!-- X Share -->
               <v-btn
-                :href="`https://x.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`"
+                :href="`https://x.com/intent/tweet?text=${encodeURIComponent(
+                  shareText
+                )}&url=${encodeURIComponent(shareUrl)}`"
                 target="_blank"
                 icon
                 variant="outlined"
@@ -152,7 +203,10 @@
               <!-- Instagram Share (Link to Profile or Disabled) -->
               <v-btn
                 v-if="vendor.IGHandle"
-                :href="`https://www.instagram.com/${vendor.IGHandle.replace('@', '')}`"
+                :href="`https://www.instagram.com/${vendor.IGHandle.replace(
+                  '@',
+                  ''
+                )}`"
                 target="_blank"
                 icon
                 variant="outlined"
@@ -209,8 +263,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
-import axios from 'axios';
+import { defineComponent, computed } from "vue";
+import axios from "axios";
 
 interface DescriptionNode {
   type: string;
@@ -242,7 +296,7 @@ interface Vendor {
 }
 
 export default defineComponent({
-  name: 'VendorView',
+  name: "VendorView",
   data(): {
     vendor: Vendor | null;
     loading: boolean;
@@ -263,7 +317,9 @@ export default defineComponent({
       return window.location.href;
     },
     shareText(): string {
-      return `Check out ${this.vendor?.BusinessName || 'this vendor'} at The Recollective in Bridgeport, CT!`;
+      return `Check out ${
+        this.vendor?.BusinessName || "this vendor"
+      } at The Recollective in Bridgeport, CT!`;
     },
   },
   created() {
@@ -279,41 +335,45 @@ export default defineComponent({
           `https://cms.recollectivect.com/api/vendors/${documentId}?populate[0]=CoverImage`, // Removed populate[1]=Photos to avoid 404 until field is added
           {
             headers: {
-              Authorization: `Bearer ${import.meta.env.VUE_APP_API_TOKEN || 'ffd1ecc6d7e6412700902194d78a066135b008d66ee965c713a2fb7199e8b70b6c2e2b361672f452fceb5ec1829a5b94f94084eca3489879be0df6354ec871e8e9c644456c04ce9e7811ae8878981ec85cc1873cf1176f642fcb1ee729a41ab7c127bf6367625e04e9af8e7194913a94974f291021c5780c161c830f8f346e0b'}`,
+              Authorization: `Bearer ${
+                import.meta.env.VUE_APP_API_TOKEN ||
+                "ffd1ecc6d7e6412700902194d78a066135b008d66ee965c713a2fb7199e8b70b6c2e2b361672f452fceb5ec1829a5b94f94084eca3489879be0df6354ec871e8e9c644456c04ce9e7811ae8878981ec85cc1873cf1176f642fcb1ee729a41ab7c127bf6367625e04e9af8e7194913a94974f291021c5780c161c830f8f346e0b"
+              }`,
             },
           }
         );
         this.vendor = response.data.data;
         if (!this.vendor) {
-          throw new Error('Vendor not found');
+          throw new Error("Vendor not found");
         }
         if (!this.vendor.Active) {
-          this.error = 'This vendor is not active.';
+          this.error = "This vendor is not active.";
           this.vendor = null;
         }
       } catch (err: any) {
         if (err.response?.status === 404) {
           this.error = `Vendor with ID ${this.$route.params.documentId} not found.`;
         } else {
-          this.error = 'Failed to load vendor details. Please try again later.';
+          this.error = "Failed to load vendor details. Please try again later.";
         }
-        console.error('Error loading vendor:', err);
+        console.error("Error loading vendor:", err);
         this.vendor = null;
       } finally {
         this.loading = false;
-        console.log('Loading state:', this.loading); // Debug log
+        console.log("Loading state:", this.loading); // Debug log
       }
     },
     extractDescription(description: DescriptionNode[] | undefined): string {
-      if (!description || !Array.isArray(description)) return 'No description available.';
+      if (!description || !Array.isArray(description))
+        return "No description available.";
       return description
         .map((node) =>
           node.children
-            .filter((child) => child.type === 'text')
+            .filter((child) => child.type === "text")
             .map((child) => child.text)
-            .join('')
+            .join("")
         )
-        .join(' ');
+        .join(" ");
     },
     openGallery(index: number) {
       this.selectedPhotoIndex = index;
