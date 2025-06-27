@@ -296,7 +296,7 @@ export default defineComponent({
       try {
         const documentId = this.$route.params.documentId;
         const response = await axios.get(
-          `https://cms.recollectivect.com/api/vendors/${documentId}?populate[0]=CoverImage`, // Add &populate[1]=Photos when field is available in Strapi
+          `https://cms.recollectivect.com/api/vendors/${documentId}?populate[0]=CoverImage&populate[1]=Photos`, // Add &populate[1]=Photos when field is available in Strapi
           {
             headers: {
               Authorization: `Bearer ffd1ecc6d7e6412700902194d78a066135b008d66ee965c713a2fb7199e8b70b6c2e2b361672f452fceb5ec1829a5b94f94084eca3489879be0df6354ec871e8e9c644456c04ce9e7811ae8878981ec85cc1873cf1176f642fcb1ee729a41ab7c127bf6367625e04e9af8e7194913a94974f291021c5780c161c830f8f346e0b`,

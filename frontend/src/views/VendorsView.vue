@@ -6,8 +6,9 @@
       height="400"
       scale="1.5"
     >
-      <div class="d-flex flex-column fill-height justify-center align-center text-medium-emphasis">
-      </div>
+      <div
+        class="d-flex flex-column fill-height justify-center align-center text-medium-emphasis"
+      ></div>
     </v-parallax>
 
     <!-- Vendors Overview -->
@@ -15,7 +16,10 @@
       <v-row justify="center">
         <v-col cols="12" md="10" lg="8">
           <p class="text-body-1 mb-6 text-black">
-            The Recollective is home to a vibrant community of vendors, each bringing unique stories, styles, and treasures to our historic marketplace in Bridgeport. From seasoned antique dealers to emerging artists, discover the passion behind every booth.
+            The Recollective is home to a vibrant community of vendors, each
+            bringing unique stories, styles, and treasures to our historic
+            marketplace in Bridgeport. From seasoned antique dealers to emerging
+            artists, discover the passion behind every booth.
           </p>
           <!-- Search and Sort Controls -->
           <v-row class="mb-6">
@@ -26,7 +30,8 @@
                 prepend-inner-icon="mdi-magnify"
                 variant="outlined"
                 clearable
-                @input="filterVendors"
+                @input="debouncedFilterVendors"
+                @click:clear="clearSearch"
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
@@ -45,11 +50,18 @@
 
     <!-- Dynamic Vendor List -->
     <template v-for="(vendor, index) in filteredVendors" :key="vendor.id">
-      <v-container :class="['py-8', index % 2 === 0 ? 'bg-grey-lighten-4' : '']">
+      <v-container
+        :class="['py-8', index % 2 === 0 ? 'bg-grey-lighten-4' : '']"
+      >
         <v-row justify="center">
           <v-col cols="12" md="10" lg="8">
             <v-row>
-              <v-col cols="12" md="6" :order="index % 2 === 0 ? 2 : 1" :order-md="index % 2 === 0 ? 1 : 2">
+              <v-col
+                cols="12"
+                md="6"
+                :order="index % 2 === 0 ? 2 : 1"
+                :order-md="index % 2 === 0 ? 1 : 2"
+              >
                 <h2 class="text-h4 mb-4 text-black">
                   <router-link
                     :to="`/vendors/${vendor.documentId}`"
@@ -64,13 +76,18 @@
                 <h3 class="text-h6 mb-2 text-black">Contact:</h3>
                 <v-list>
                   <v-list-item v-if="vendor.Email">
-                    <v-list-item-title>Email: {{ vendor.Email }}</v-list-item-title>
+                    <v-list-item-title
+                      >Email: {{ vendor.Email }}</v-list-item-title
+                    >
                   </v-list-item>
                   <v-list-item v-if="vendor.IGHandle">
                     <v-list-item-title>
                       Instagram:
                       <a
-                        :href="`https://www.instagram.com/${vendor.IGHandle.replace('@', '')}`"
+                        :href="`https://www.instagram.com/${vendor.IGHandle.replace(
+                          '@',
+                          ''
+                        )}`"
                         target="_blank"
                         class="text-decoration-none"
                       >
@@ -80,9 +97,19 @@
                   </v-list-item>
                 </v-list>
               </v-col>
-              <v-col cols="12" md="6" :order="index % 2 === 0 ? 1 : 2" :order-md="index % 2 === 0 ? 2 : 1" class="d-flex align-center">
+              <v-col
+                cols="12"
+                md="6"
+                :order="index % 2 === 0 ? 1 : 2"
+                :order-md="index % 2 === 0 ? 2 : 1"
+                class="d-flex align-center"
+              >
                 <v-img
-                  :src="vendor.CoverImage ? `https://cms.recollectivect.com${vendor.CoverImage.url}` : 'https://media.recollectivect.com/public/vendor_placeholder.jpg'"
+                  :src="
+                    vendor.CoverImage
+                      ? `https://cms.recollectivect.com${vendor.CoverImage.url}`
+                      : 'https://media.recollectivect.com/public/vendor_placeholder.jpg'
+                  "
                   :alt="vendor.BusinessName"
                   class="rounded-lg"
                   height="300"
@@ -107,7 +134,10 @@
     </v-container>
 
     <!-- Loading or Error State -->
-    <v-container v-if="!filteredVendors.length && !error && !loading" class="py-8 text-center">
+    <v-container
+      v-if="!filteredVendors.length && !error && !loading"
+      class="py-8 text-center"
+    >
       <p class="text-body-1 text-black">No vendors found.</p>
     </v-container>
     <v-container v-if="loading" class="py-8 text-center">
@@ -120,8 +150,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import axios from 'axios';
+import { defineComponent } from "vue";
+import axios from "axios";
+import { debounce } from "lodash";
 
 interface DescriptionNode {
   type: string;
@@ -164,7 +195,7 @@ interface PaginationMeta {
 }
 
 export default defineComponent({
-  name: 'VendorsView',
+  name: "VendorsView",
   data(): {
     vendors: Vendor[];
     filteredVendors: Vendor[];
@@ -181,11 +212,11 @@ export default defineComponent({
     return {
       vendors: [],
       filteredVendors: [],
-      searchQuery: '',
-      sortOption: 'name-asc',
+      searchQuery: "",
+      sortOption: "name-asc",
       sortOptions: [
-        { title: 'Name (A-Z)', value: 'name-asc' },
-        { title: 'Name (Z-A)', value: 'name-desc' },
+        { title: "Name (A-Z)", value: "name-asc" },
+        { title: "Name (Z-A)", value: "name-desc" },
       ],
       error: null,
       loading: false,
@@ -199,8 +230,15 @@ export default defineComponent({
     this.loadVendors();
   },
   methods: {
+    debouncedFilterVendors: debounce(function () {
+      this.filterVendors();
+    }, 300),
     async loadVendors() {
       this.loading = true;
+      this.error = null;
+      this.vendors = [];
+      this.filteredVendors = [];
+
       try {
         let query = `pagination[page]=${this.currentPage}&pagination[pageSize]=${this.pageSize}&populate[0]=CoverImage&filters[Active][$eq]=true`;
 
@@ -211,12 +249,13 @@ export default defineComponent({
         }
 
         // Add sort parameter
-        if (this.sortOption === 'name-asc') {
+        if (this.sortOption === "name-asc") {
           query += `&sort[0]=BusinessName:asc`;
-        } else if (this.sortOption === 'name-desc') {
+        } else if (this.sortOption === "name-desc") {
           query += `&sort[0]=BusinessName:desc`;
         }
 
+        console.log("Fetching vendors with query:", query);
         const response = await axios.get(
           `https://cms.recollectivect.com/api/vendors?${query}`,
           {
@@ -226,35 +265,59 @@ export default defineComponent({
           }
         );
 
+        console.log("API response:", response.data);
+
+        // Validate response
+        if (!response.data || !Array.isArray(response.data.data)) {
+          throw new Error(
+            "Invalid response format: data is missing or not an array"
+          );
+        }
+        if (!response.data.meta || !response.data.meta.pagination) {
+          throw new Error(
+            "Invalid response format: pagination metadata is missing"
+          );
+        }
+
         this.vendors = response.data.data;
         this.filteredVendors = [...this.vendors];
-        this.pageCount = response.data.meta.pagination.pageCount;
-        this.total = response.data.meta.pagination.total;
+        this.pageCount = response.data.meta.pagination.pageCount || 1;
+        this.total = response.data.meta.pagination.total || 0;
+
+        console.log("Vendors updated:", this.vendors);
       } catch (err: any) {
-        this.error = 'Failed to load vendors from CMS. Please try again later.';
-        console.error('Error loading vendors:', err);
+        this.error =
+          err.message ||
+          "Failed to load vendors from CMS. Please try again later.";
+        console.error("Error loading vendors:", err);
         this.vendors = [];
         this.filteredVendors = [];
         this.pageCount = 1;
         this.total = 0;
       } finally {
         this.loading = false;
+        console.log("Loading state:", this.loading);
       }
     },
     extractDescription(description: DescriptionNode[]): string {
-      if (!description || !Array.isArray(description)) return '';
+      if (!description || !Array.isArray(description)) return "";
       return description
         .map((node) =>
           node.children
-            .filter((child) => child.type === 'text')
+            .filter((child) => child.type === "text")
             .map((child) => child.text)
-            .join('')
+            .join("")
         )
-        .join(' ');
+        .join(" ");
     },
     filterVendors() {
-      this.currentPage = 1; // Reset to first page on new search
+      this.currentPage = 1; // Reset to first page on search
       this.loadVendors();
+    },
+    clearSearch() {
+      this.searchQuery = ""; // Clear search query
+      this.currentPage = 1; // Reset to first page
+      this.loadVendors(); // Fetch all vendors
     },
     handleSortChange() {
       this.currentPage = 1; // Reset to first page on sort change
