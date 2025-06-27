@@ -2,16 +2,22 @@
   <div>
     <!-- Hero Section -->
     <v-parallax
-      :src="vendor?.CoverImage ? `https://cms.recollectivect.com${vendor.CoverImage.url}` : 'https://media.recollectivect.com/public/vendor_placeholder.jpg'"
+      :src="
+        vendor?.CoverImage
+          ? `https://cms.recollectivect.com${vendor.CoverImage.url}`
+          : 'https://media.recollectivect.com/public/vendor_placeholder.jpg'
+      "
       :height="$vuetify.display.smAndDown ? 300 : 500"
       scale="1.5"
     >
-      <div class="d-flex flex-column fill-height justify-center align-center text-white text-center px-4">
+      <div
+        class="d-flex flex-column fill-height justify-center align-center text-white text-center px-4"
+      >
         <h1
           class="text-h3 font-weight-bold mb-4"
           :class="{ 'text-h4': $vuetify.display.smAndDown }"
         >
-          {{ vendor?.BusinessName || 'Vendor' }}
+          {{ vendor?.BusinessName || "Vendor" }}
         </h1>
       </div>
     </v-parallax>
@@ -21,15 +27,27 @@
       <v-row justify="center">
         <v-col cols="12" md="10" lg="8">
           <!-- Description Section -->
-          <v-card elevation="2" class="pa-6 pa-md-8 mb-8" rounded="lg" v-if="vendor">
-            <h2 class="text-h4 font-weight-bold mb-4 text-black">About {{ vendor.BusinessName }}</h2>
+          <v-card
+            elevation="2"
+            class="pa-6 pa-md-8 mb-8"
+            rounded="lg"
+            v-if="vendor"
+          >
+            <h2 class="text-h4 font-weight-bold mb-4 text-black">
+              About {{ vendor.BusinessName }}
+            </h2>
             <p class="text-body-1 text-justify text-black">
               {{ extractDescription(vendor.Description) }}
             </p>
           </v-card>
 
           <!-- Photo Gallery -->
-          <v-card elevation="2" class="pa-6 pa-md-8 mb-8" rounded="lg" v-if="vendor?.Photos?.length">
+          <v-card
+            elevation="2"
+            class="pa-6 pa-md-8 mb-8"
+            rounded="lg"
+            v-if="vendor?.Photos?.length"
+          >
             <h2 class="text-h4 font-weight-bold mb-6 text-black">Gallery</h2>
             <v-row>
               <v-col
@@ -49,33 +67,63 @@
               </v-col>
             </v-row>
           </v-card>
-          <v-card elevation="2" class="pa-6 pa-md-8 mb-8" rounded="lg" v-else-if="!loading && !error">
-            <p class="text-body-1 text-black">No photos available for this vendor.</p>
+          <v-card
+            elevation="2"
+            class="pa-6 pa-md-8 mb-8"
+            rounded="lg"
+            v-else-if="!loading && !error"
+          >
+            <p class="text-body-1 text-black">
+              No photos available for this vendor.
+            </p>
           </v-card>
 
           <!-- Contact Section -->
-          <v-card elevation="2" class="pa-6 pa-md-8" rounded="lg" v-if="vendor">
+          <v-card
+            elevation="2"
+            class="pa-6 pa-md-8 mb-8"
+            rounded="lg"
+            v-if="vendor"
+          >
             <h2 class="text-h4 font-weight-bold mb-6 text-black">Contact</h2>
             <v-list bg-color="transparent">
               <v-list-item v-if="vendor.Email" class="mb-4">
                 <template v-slot:prepend>
-                  <v-icon icon="mdi-email" color="primary" class="mr-3"></v-icon>
+                  <v-icon
+                    icon="mdi-email"
+                    color="primary"
+                    class="mr-3"
+                  ></v-icon>
                 </template>
-                <v-list-item-title class="font-weight-bold">Email</v-list-item-title>
+                <v-list-item-title class="font-weight-bold"
+                  >Email</v-list-item-title
+                >
                 <v-list-item-subtitle>
-                  <a :href="`mailto:${vendor.Email}`" class="text-decoration-none">
+                  <a
+                    :href="`mailto:${vendor.Email}`"
+                    class="text-decoration-none"
+                  >
                     {{ vendor.Email }}
                   </a>
                 </v-list-item-subtitle>
               </v-list-item>
               <v-list-item v-if="vendor.IGHandle" class="mb-4">
                 <template v-slot:prepend>
-                  <v-icon icon="mdi-instagram" color="primary" class="mr-3"></v-icon>
+                  <v-icon
+                    icon="mdi-instagram"
+                    color="primary"
+                    class="mr-3"
+                  ></v-icon>
                 </template>
-                <v-list-item-title class="font-weight-bold">Instagram</v-list-item-title>
+                <v-list-item-title class="font-weight-bold"
+                  >Instagram</v-list-item-title
+                >
                 <v-list-item-subtitle>
                   <a
-                    :href="`https://www.instagram.com/${vendor.IGHandle.replace('@', '')}`"
+                    :href="`https://www.instagram.com/${vendor.IGHandle.replace(
+                      '@',
+                      ''
+                    )}`"
                     target="_blank"
                     class="text-decoration-none"
                   >
@@ -84,6 +132,70 @@
                 </v-list-item-subtitle>
               </v-list-item>
             </v-list>
+          </v-card>
+
+          <!-- Share Section -->
+          <v-card
+            elevation="2"
+            class="pa-6 pa-md-8 mb-8"
+            rounded="lg"
+            v-if="vendor"
+          >
+            <h2 class="text-h4 font-weight-bold mb-6 text-black">Share</h2>
+            <div class="d-flex flex-wrap gap-2 justify-center">
+              <!-- Facebook Share -->
+              <v-btn
+                :href="`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                  shareUrl
+                )}`"
+                target="_blank"
+                icon
+                variant="outlined"
+                color="primary"
+                class="social-btn mx-2"
+              >
+                <v-icon>mdi-facebook</v-icon>
+              </v-btn>
+              <!-- X Share -->
+              <v-btn
+                :href="`https://x.com/intent/tweet?text=${encodeURIComponent(
+                  shareText
+                )}&url=${encodeURIComponent(shareUrl)}`"
+                target="_blank"
+                icon
+                variant="outlined"
+                color="primary"
+                class="social-btn mx-2"
+              >
+                <v-icon>mdi-twitter</v-icon>
+              </v-btn>
+              <!-- Instagram Share (Link to Profile or Disabled) -->
+              <v-btn
+                v-if="vendor.IGHandle"
+                :href="`https://www.instagram.com/${vendor.IGHandle.replace(
+                  '@',
+                  ''
+                )}`"
+                target="_blank"
+                icon
+                variant="outlined"
+                color="primary"
+                class="social-btn mx-2"
+              >
+                <v-icon>mdi-instagram</v-icon>
+              </v-btn>
+              <v-btn
+                v-else
+                icon
+                variant="outlined"
+                color="grey"
+                class="social-btn mx-2"
+                disabled
+                title="Instagram sharing unavailable"
+              >
+                <v-icon>mdi-instagram</v-icon>
+              </v-btn>
+            </div>
           </v-card>
 
           <!-- Back to Vendors -->
@@ -120,8 +232,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import axios from 'axios';
+import { defineComponent, computed } from "vue";
+import axios from "axios";
 
 interface DescriptionNode {
   type: string;
@@ -153,7 +265,7 @@ interface Vendor {
 }
 
 export default defineComponent({
-  name: 'VendorView',
+  name: "VendorView",
   data(): {
     vendor: Vendor | null;
     loading: boolean;
@@ -164,6 +276,16 @@ export default defineComponent({
       loading: true,
       error: null,
     };
+  },
+  computed: {
+    shareUrl(): string {
+      return window.location.href;
+    },
+    shareText(): string {
+      return `Check out ${
+        this.vendor?.BusinessName || "this vendor"
+      } at The Recollective in Bridgeport, CT!`;
+    },
   },
   created() {
     this.loadVendor();
@@ -183,34 +305,35 @@ export default defineComponent({
         );
         this.vendor = response.data.data;
         if (!this.vendor) {
-          throw new Error('Vendor not found');
+          throw new Error("Vendor not found");
         }
         if (!this.vendor.Active) {
-          this.error = 'This vendor is not active.';
+          this.error = "This vendor is not active.";
           this.vendor = null;
         }
       } catch (err: any) {
         if (err.response?.status === 404) {
           this.error = `Vendor with ID ${this.$route.params.documentId} not found.`;
         } else {
-          this.error = 'Failed to load vendor details. Please try again later.';
+          this.error = "Failed to load vendor details. Please try again later.";
         }
-        console.error('Error loading vendor:', err);
+        console.error("Error loading vendor:", err);
         this.vendor = null;
       } finally {
         this.loading = false;
       }
     },
     extractDescription(description: DescriptionNode[] | undefined): string {
-      if (!description || !Array.isArray(description)) return 'No description available.';
+      if (!description || !Array.isArray(description))
+        return "No description available.";
       return description
         .map((node) =>
           node.children
-            .filter((child) => child.type === 'text')
+            .filter((child) => child.type === "text")
             .map((child) => child.text)
-            .join('')
+            .join("")
         )
-        .join(' ');
+        .join(" ");
     },
   },
 });
@@ -244,6 +367,14 @@ export default defineComponent({
 
 .v-btn {
   letter-spacing: 0.1em;
+}
+
+.social-btn {
+  transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+  transform: translateY(-2px);
 }
 
 @media (max-width: 600px) {
