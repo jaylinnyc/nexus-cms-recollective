@@ -332,7 +332,7 @@ export default defineComponent({
       try {
         const documentId = this.$route.params.documentId;
         const response = await axios.get(
-          `https://cms.recollectivect.com/api/vendors/${documentId}?populate[0]=CoverImage`, // Removed populate[1]=Photos to avoid 404 until field is added
+          `https://cms.recollectivect.com/api/vendors/${documentId}?populate[0]=CoverImage&populate[1]=Photos`, // Removed populate[1]=Photos to avoid 404 until field is added
           {
             headers: {
               Authorization: `Bearer ${
