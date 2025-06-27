@@ -15,7 +15,12 @@
           color="black"
         ></v-app-bar-nav-icon>
         <router-link to="/" class="d-flex align-center text-decoration-none">
-          <img src="/rc-transparent.png" alt="The Recollective Logo" style="height: 25px; margin-left: 10px;" class="transition-transform hover:scale-105" />
+          <img
+            src="/rc-transparent.png"
+            alt="The Recollective Logo"
+            style="height: 25px; margin-left: 10px"
+            class="transition-transform hover:scale-105"
+          />
         </router-link>
       </template>
 
@@ -45,10 +50,18 @@
       <v-list>
         <v-list-item class="py-6">
           <template v-slot:prepend>
-            <img src="/rc-transparent.png" alt="The Recollective Logo" style="height: 48px; margin-right: 16px;" />
+            <img
+              src="/rc-transparent.png"
+              alt="The Recollective Logo"
+              style="height: 48px; margin-right: 16px"
+            />
           </template>
-          <v-list-item-title class="text-h6 font-weight-bold text-black">The Recollective</v-list-item-title>
-          <v-list-item-subtitle class="text-caption text-gray-600">Bridgeport, CT</v-list-item-subtitle>
+          <v-list-item-title class="text-h6 font-weight-bold text-black"
+            >The Recollective</v-list-item-title
+          >
+          <v-list-item-subtitle class="text-caption text-gray-600"
+            >Bridgeport, CT</v-list-item-subtitle
+          >
         </v-list-item>
       </v-list>
 
@@ -66,7 +79,9 @@
           <template v-slot:prepend>
             <v-icon :icon="item.icon" color="black"></v-icon>
           </template>
-          <v-list-item-title class="text-black">{{ item.title }}</v-list-item-title>
+          <v-list-item-title class="text-black">{{
+            item.title
+          }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -77,13 +92,10 @@
     </v-main>
 
     <!-- Footer -->
-    <v-footer
-      color="white"
-      class="text-center py-6 elevation-4"
-    >
+    <v-footer color="white" class="text-center py-6 elevation-4">
       <v-row justify="center" no-gutters>
         <v-col cols="12" class="mb-4">
-          <!-- MDI Icons (Facebook, Twitter) -->
+          <!-- MDI Icons (Facebook only) -->
           <v-btn
             v-for="icon in mdiIcons"
             :key="icon.icon"
@@ -119,18 +131,23 @@
             icon
             variant="text"
             color="black"
-            href="https://www.tiktok.com/@therecollectivect"
+            href="https://www.tiktok.com/@threcollectivect"
             target="_blank"
             :class="{ 'scale-110': hoverIcon === 'tiktok' }"
             @mouseover="hoverIcon = 'tiktok'"
             @mouseleave="hoverIcon = ''"
           >
-            <img src="@/assets/tiktok.svg" alt="TikTok Logo" class="social-icon" />
+            <img
+              src="@/assets/tiktok.svg"
+              alt="TikTok Logo"
+              class="social-icon"
+            />
           </v-btn>
         </v-col>
         <v-col cols="12">
           <div class="text-center text-black opacity-80 text-body-2">
-            © {{ new Date().getFullYear() }} — <strong>The Recollective</strong> — Bridgeport, CT
+            © {{ new Date().getFullYear() }} —
+            <strong>The Recollective</strong> — Bridgeport, CT
           </div>
         </v-col>
       </v-row>
@@ -139,23 +156,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: "MainLayout",
   setup() {
     const drawer = ref(false);
-    const hoverIcon = ref('');
+    const hoverIcon = ref("");
     const menuItems = [
-      { title: 'Home', path: '/', icon: 'mdi-home' },
-      { title: 'About', path: '/about', icon: 'mdi-information' },
-      { title: 'Vendors', path: '/vendors', icon: 'mdi-store' },
-      { title: 'Become a Vendor', path: '/become-a-vendor', icon: 'mdi-plus-box' },
-      { title: 'Contact', path: '/contact', icon: 'mdi-email' },
+      { title: "Home", path: "/", icon: "mdi-home" },
+      { title: "About", path: "/about", icon: "mdi-information" },
+      { title: "Vendors", path: "/vendors", icon: "mdi-store" },
+      {
+        title: "Become a Vendor",
+        path: "/become-a-vendor",
+        icon: "mdi-plus-box",
+      },
+      { title: "Contact", path: "/contact", icon: "mdi-email" },
     ];
     const mdiIcons = [
-      { icon: 'mdi-facebook', href: '#' },
-      { icon: 'mdi-twitter', href: '#' }
+      {
+        icon: "mdi-facebook",
+        href: "https://www.facebook.com/therecollectivect",
+      },
     ];
 
     return {

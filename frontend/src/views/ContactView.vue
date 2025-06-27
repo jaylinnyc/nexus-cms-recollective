@@ -8,8 +8,7 @@
     >
       <div
         class="d-flex flex-column fill-height justify-center align-center text-white text-center px-4"
-      >
-      </div>
+      ></div>
     </v-parallax>
 
     <!-- Contact Information -->
@@ -116,7 +115,9 @@
                       size="small"
                       class="social-btn mx-2"
                     >
-                      <v-icon v-if="social.icon !== 'tiktok'">{{ social.icon }}</v-icon>
+                      <v-icon v-if="social.icon !== 'tiktok'">{{
+                        social.icon
+                      }}</v-icon>
                       <img
                         v-else
                         src="@/assets/tiktok.svg"
@@ -170,10 +171,15 @@ export default defineComponent({
     });
 
     const socialLinks = [
-      { icon: "mdi-facebook", href: "#" },
-      { icon: "mdi-twitter", href: "#" },
-      { icon: "mdi-instagram", href: "https://www.instagram.com/therecollectivect" },
-      { icon: "tiktok", href: "https://www.tiktok.com/@therecollectivect" },
+      {
+        icon: "mdi-facebook",
+        href: "https://www.facebook.com/therecollectivect",
+      },
+      {
+        icon: "mdi-instagram",
+        href: "https://www.instagram.com/therecollectivect",
+      },
+      { icon: "tiktok", href: "https://www.tiktok.com/@threcollectivect" },
     ];
 
     const emailRules = [
