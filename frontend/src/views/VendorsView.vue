@@ -230,7 +230,7 @@ export default defineComponent({
     this.loadVendors();
   },
   methods: {
-    debouncedFilterVendors: debounce(function () {
+    debouncedFilterVendors: debounce(() => {
       this.filterVendors();
     }, 300),
     async loadVendors() {
