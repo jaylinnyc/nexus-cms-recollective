@@ -1,0 +1,68 @@
+{
+  "kind": "collectionType",
+  "collectionName": "vendors",
+  "info": {
+    "singularName": "vendor",
+    "pluralName": "vendors",
+    "displayName": "Vendor"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "BusinessName": {
+      "type": "string",
+      "maxLength": 100,
+      "required": true,
+      "unique": true
+    },
+    "Email": {
+      "type": "email",
+      "required": true,
+      "unique": true
+    },
+    "IGHandle": {
+      "type": "string",
+      "unique": true
+    },
+    "Description": {
+      "type": "blocks"
+    },
+    "Active": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "StartDate": {
+      "type": "date",
+      "required": true
+    },
+    "Phone": {
+      "type": "string",
+      "required": false,
+      "unique": true,
+      "regex": "/^\\+?[\\d\\s\\-()]{7,15}$/"
+    },
+    "Photos": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "CoverImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}
