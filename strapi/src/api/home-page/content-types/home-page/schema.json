@@ -1,10 +1,10 @@
 {
   "kind": "singleType",
-  "collectionName": "become_vendors",
+  "collectionName": "home_pages",
   "info": {
-    "singularName": "become-vendor",
-    "pluralName": "become-vendors",
-    "displayName": "BecomeVendorPage"
+    "singularName": "home-page",
+    "pluralName": "home-pages",
+    "displayName": "HomePage"
   },
   "options": {
     "draftAndPublish": true
@@ -21,8 +21,8 @@
         "audios"
       ]
     },
-    "ApplicationProcess": {
-      "type": "text"
+    "Text": {
+      "type": "blocks"
     }
   }
 }
