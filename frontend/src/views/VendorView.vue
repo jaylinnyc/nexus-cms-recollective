@@ -1,12 +1,8 @@
 <template>
   <div>
-    <!-- Hero Section -->
+    <!-- Vendors Hero -->
     <v-parallax
-      :src="
-        vendor?.CoverImage
-          ? `https://cms.recollectivect.com${vendor.CoverImage.url}`
-          : 'https://media.recollectivect.com/public/vendor_placeholder.jpg'
-      "
+      :src="vendorCoverImageUrl"
       :height="$vuetify.display.smAndDown ? 300 : 500"
       scale="1.5"
     >
@@ -58,7 +54,7 @@
                 md="4"
               >
                 <v-img
-                  :src="`https://cms.recollectivect.com${photo.url}`"
+                  :src="`${apiUrl}${photo.url}`"
                   :alt="`${vendor.BusinessName} Photo ${index + 1}`"
                   class="rounded-lg transition-transform hover:scale-105 cursor-pointer"
                   aspect-ratio="1.5"
@@ -101,7 +97,7 @@
                 <v-carousel-item
                   v-for="(photo, index) in vendor?.Photos"
                   :key="index"
-                  :src="`https://cms.recollectivect.com${photo.url}`"
+                  :src="`${apiUrl}${photo.url}`"
                   :alt="`${vendor?.BusinessName} Photo ${index + 1}`"
                   cover
                 ></v-carousel-item>
@@ -273,6 +269,7 @@ interface DescriptionNode {
 
 interface Media {
   id: number;
+  documentId: string;
   name: string;
   url: string;
   formats?: {
@@ -303,6 +300,7 @@ export default defineComponent({
     error: string | null;
     galleryDialog: boolean;
     selectedPhotoIndex: number;
+    apiUrl: string;
   } {
     return {
       vendor: null,
@@ -310,6 +308,7 @@ export default defineComponent({
       error: null,
       galleryDialog: false,
       selectedPhotoIndex: 0,
+      apiUrl: import.meta.env.VITE_APP_STRAPI_API_URL || "https://cms.recollectivect.com",
     };
   },
   computed: {
@@ -321,8 +320,14 @@ export default defineComponent({
         this.vendor?.BusinessName || "this vendor"
       } at The Recollective in Bridgeport, CT!`;
     },
+    vendorCoverImageUrl(): string {
+      return this.vendor?.CoverImage
+        ? `${this.apiUrl}${this.vendor.CoverImage.url}`
+        : "https://media.recollectivect.com/public/vendor_placeholder.jpg";
+    },
   },
   created() {
+    console.log("VendorView created: Initiating API call");
     this.loadVendor();
   },
   methods: {
@@ -330,37 +335,47 @@ export default defineComponent({
       this.loading = true;
       this.error = null;
       try {
+        const token = import.meta.env.VITE_APP_STRAPI_API_TOKEN;
+        if (!token) {
+          this.error = "Strapi API token is missing. Please check your .env file.";
+          console.warn("Skipping Vendor API call due to missing token.");
+          return;
+        }
+
         const documentId = this.$route.params.documentId;
         const response = await axios.get(
-          `https://cms.recollectivect.com/api/vendors/${documentId}?populate[0]=CoverImage&populate[1]=Photos`, // Removed populate[1]=Photos to avoid 404 until field is added
+          `${this.apiUrl}/api/vendors/${documentId}?populate[0]=CoverImage&populate[1]=Photos`,
           {
             headers: {
-              Authorization: `Bearer ${
-                import.meta.env.VUE_APP_API_TOKEN ||
-                "ffd1ecc6d7e6412700902194d78a066135b008d66ee965c713a2fb7199e8b70b6c2e2b361672f452fceb5ec1829a5b94f94084eca3489879be0df6354ec871e8e9c644456c04ce9e7811ae8878981ec85cc1873cf1176f642fcb1ee729a41ab7c127bf6367625e04e9af8e7194913a94974f291021c5780c161c830f8f346e0b"
-              }`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
-        this.vendor = response.data.data;
-        if (!this.vendor) {
-          throw new Error("Vendor not found");
+
+        console.log("Vendor response:", response.data);
+
+        if (!response.data || !response.data.data) {
+          throw new Error("Invalid response format: Vendor data is missing");
         }
+        this.vendor = response.data.data;
         if (!this.vendor.Active) {
           this.error = "This vendor is not active.";
           this.vendor = null;
         }
       } catch (err: any) {
+        console.error("Error loading vendor:", err);
+        console.log("Full error:", err.response?.data || err.message);
+        console.log("Error status:", err.response?.status);
+        console.log("Error headers:", err.response?.headers);
         if (err.response?.status === 404) {
           this.error = `Vendor with ID ${this.$route.params.documentId} not found.`;
         } else {
           this.error = "Failed to load vendor details. Please try again later.";
         }
-        console.error("Error loading vendor:", err);
         this.vendor = null;
       } finally {
         this.loading = false;
-        console.log("Loading state:", this.loading); // Debug log
+        console.log("Loading state:", this.loading);
       }
     },
     extractDescription(description: DescriptionNode[] | undefined): string {
