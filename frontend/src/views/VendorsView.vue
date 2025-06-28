@@ -2,7 +2,7 @@
   <div>
     <!-- Vendors Hero -->
     <v-parallax
-      src="https://media.recollectivect.com/public/vendors.jpg"
+      :src="vendorPageCoverImageUrl"
       height="400"
       scale="1.5"
     >
@@ -16,10 +16,7 @@
       <v-row justify="center">
         <v-col cols="12" md="10" lg="8">
           <p class="text-body-1 mb-6 text-black">
-            The Recollective is home to a vibrant community of vendors, each
-            bringing unique stories, styles, and treasures to our historic
-            marketplace in Bridgeport. From seasoned antique dealers to emerging
-            artists, discover the passion behind every booth.
+            {{ vendorPage.Introduction || 'The Recollective is home to a vibrant community of vendors, each bringing unique stories, styles, and treasures to our historic marketplace in Bridgeport. From seasoned antique dealers to emerging artists, discover the passion behind every booth.' }}
           </p>
           <!-- Search and Sort Controls -->
           <v-row class="mb-6">
@@ -63,13 +60,14 @@
                 :order-md="index % 2 === 0 ? 1 : 2"
               >
                 <h2 class="text-h4 mb-4 text-black">
-                  <!-- <router-link
+                  <router-link
+                    v-if="vendorPage.Enable_Vendor_Link"
                     :to="`/vendors/${vendor.documentId}`"
                     class="text-decoration-none text-black hover:text-primary"
                   >
                     {{ vendor.BusinessName }}
-                  </router-link> -->
-                  {{ vendor.BusinessName }}
+                  </router-link>
+                  <span v-else>{{ vendor.BusinessName }}</span>
                 </h2>
                 <p class="text-body-1 mb-4 text-justify text-black">
                   {{ extractDescription(vendor.Description) }}
@@ -106,11 +104,7 @@
                 class="d-flex align-center"
               >
                 <v-img
-                  :src="
-                    vendor.CoverImage
-                      ? `https://cms.recollectivect.com${vendor.CoverImage.url}`
-                      : 'https://media.recollectivect.com/public/vendor_placeholder.jpg'
-                  "
+                  :src="getVendorCoverImageUrl(vendor)"
                   :alt="vendor.BusinessName"
                   class="rounded-lg"
                   height="300"
@@ -151,7 +145,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import axios from "axios";
 import { debounce } from "lodash";
 
@@ -162,6 +156,7 @@ interface DescriptionNode {
 
 interface Media {
   id: number;
+  documentId: string;
   name: string;
   url: string;
   formats?: {
@@ -183,6 +178,12 @@ interface Vendor {
   CoverImage: Media | null;
 }
 
+interface VendorPage {
+  CoverImage: Media | null;
+  Introduction: string | null;
+  Enable_Vendor_Link: boolean;
+}
+
 interface SortOption {
   title: string;
   value: string;
@@ -200,6 +201,7 @@ export default defineComponent({
   data(): {
     vendors: Vendor[];
     filteredVendors: Vendor[];
+    vendorPage: VendorPage;
     searchQuery: string;
     sortOption: string;
     sortOptions: SortOption[];
@@ -209,10 +211,16 @@ export default defineComponent({
     pageSize: number;
     pageCount: number;
     total: number;
+    apiUrl: string;
   } {
     return {
       vendors: [],
       filteredVendors: [],
+      vendorPage: {
+        CoverImage: null,
+        Introduction: null,
+        Enable_Vendor_Link: false,
+      },
       searchQuery: "",
       sortOption: "name-asc",
       sortOptions: [
@@ -225,15 +233,65 @@ export default defineComponent({
       pageSize: 10,
       pageCount: 1,
       total: 0,
+      apiUrl: import.meta.env.VITE_APP_STRAPI_API_URL || "https://cms.recollectivect.com",
     };
   },
+  computed: {
+    vendorPageCoverImageUrl(): string {
+      return this.vendorPage.CoverImage
+        ? `${this.apiUrl}${this.vendorPage.CoverImage.url}`
+        : "https://media.recollectivect.com/public/vendors.jpg";
+    },
+  },
   created() {
+    console.log("VendorsView created: Initiating API calls");
+    this.loadVendorPage();
     this.loadVendors();
   },
   methods: {
+    getVendorCoverImageUrl(vendor: Vendor): string {
+      return vendor.CoverImage
+        ? `${this.apiUrl}${vendor.CoverImage.url}`
+        : "https://media.recollectivect.com/public/vendor_placeholder.jpg";
+    },
     debouncedFilterVendors: debounce(function (this: any) {
       this.filterVendors();
     }, 300),
+    async loadVendorPage() {
+      try {
+        const token = import.meta.env.VITE_APP_STRAPI_API_TOKEN;
+        if (!token) {
+          this.error = "Strapi API token is missing. Please check your .env file.";
+          console.warn("Skipping VendorPage API call due to missing token.");
+          return;
+        }
+
+        const response = await axios.get(
+          `${this.apiUrl}/api/vendor-page?populate=CoverImage`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.data || !response.data.data) {
+          throw new Error("Invalid response format: VendorPage data is missing");
+        }
+        this.vendorPage = {
+          CoverImage: response.data.data.CoverImage || null,
+          Introduction: response.data.data.Introduction || null,
+          Enable_Vendor_Link: response.data.data.Enable_Vendor_Link || false,
+        };
+
+      } catch (err: any) {
+        console.error("Error loading VendorPage:", err);
+        console.log("Full error:", err.response?.data || err.message);
+        console.log("Error status:", err.response?.status);
+        console.log("Error headers:", err.response?.headers);
+        this.error = err.message || "Failed to load vendor page data. Using defaults.";
+      }
+    },
     async loadVendors() {
       this.loading = true;
       this.error = null;
@@ -241,6 +299,14 @@ export default defineComponent({
       this.filteredVendors = [];
 
       try {
+        const token = import.meta.env.VITE_APP_STRAPI_API_TOKEN;
+        if (!token) {
+          this.error = "Strapi API token is missing. Please check your .env file.";
+          console.warn("Skipping Vendors API call due to missing token.");
+          this.loading = false;
+          return;
+        }
+
         let query = `pagination[page]=${this.currentPage}&pagination[pageSize]=${this.pageSize}&populate[0]=CoverImage&filters[Active][$eq]=true`;
 
         if (this.searchQuery) {
@@ -254,27 +320,18 @@ export default defineComponent({
           query += `&sort[0]=BusinessName:desc`;
         }
 
-        console.log("Fetching vendors with query:", query);
-        const response = await axios.get(
-          `https://cms.recollectivect.com/api/vendors?${query}`,
-          {
-            headers: {
-              Authorization: `Bearer ffd1ecc6d7e6412700902194d78a066135b008d66ee965c713a2fb7199e8b70b6c2e2b361672f452fceb5ec1829a5b94f94084eca3489879be0df6354ec871e8e9c644456c04ce9e7811ae8878981ec85cc1873cf1176f642fcb1ee729a41ab7c127bf6367625e04e9af8e7194913a94974f291021c5780c161c830f8f346e0b`,
-            },
-          }
-        );
-
-        console.log("API response:", response.data);
+        const vendorUrl = `${this.apiUrl}/api/vendors?${query}`;
+        const response = await axios.get(vendorUrl, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.data || !Array.isArray(response.data.data)) {
-          throw new Error(
-            "Invalid response format: data is missing or not an array"
-          );
+          throw new Error("Invalid response format: data is missing or not an array");
         }
         if (!response.data.meta || !response.data.meta.pagination) {
-          throw new Error(
-            "Invalid response format: pagination metadata is missing"
-          );
+          throw new Error("Invalid response format: pagination metadata is missing");
         }
 
         this.vendors = response.data.data;
@@ -282,12 +339,12 @@ export default defineComponent({
         this.pageCount = response.data.meta.pagination.pageCount || 1;
         this.total = response.data.meta.pagination.total || 0;
 
-        console.log("Vendors updated:", this.vendors);
       } catch (err: any) {
-        this.error =
-          err.message ||
-          "Failed to load vendors from CMS. Please try again later.";
         console.error("Error loading vendors:", err);
+        console.log("Full error:", err.response?.data || err.message);
+        console.log("Error status:", err.response?.status);
+        console.log("Error headers:", err.response?.headers);
+        this.error = err.message || "Failed to load vendors from CMS. Please try again later.";
         this.vendors = [];
         this.filteredVendors = [];
         this.pageCount = 1;
