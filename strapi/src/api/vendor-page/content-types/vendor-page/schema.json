@@ -23,6 +23,10 @@
     },
     "Introduction": {
       "type": "text"
+    },
+    "Enable_Vendor_Link": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
