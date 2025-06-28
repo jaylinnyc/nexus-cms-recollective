@@ -10,11 +10,11 @@
       <v-card-title class="text-white">{{ title }}</v-card-title>
     </v-img>
 
-    <v-card-text class="text-body-1">
+    <!-- <v-card-text class="text-body-1">
       <p>{{ description }}</p>
-    </v-card-text>
+    </v-card-text> -->
 
-    <v-card-actions>
+    <v-card-actions class="my-auto">
       <v-btn
         color="black"
         variant="text"
