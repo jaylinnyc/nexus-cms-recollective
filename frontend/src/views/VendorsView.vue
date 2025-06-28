@@ -63,12 +63,13 @@
                 :order-md="index % 2 === 0 ? 1 : 2"
               >
                 <h2 class="text-h4 mb-4 text-black">
-                  <router-link
+                  <!-- <router-link
                     :to="`/vendors/${vendor.documentId}`"
                     class="text-decoration-none text-black hover:text-primary"
                   >
                     {{ vendor.BusinessName }}
-                  </router-link>
+                  </router-link> -->
+                  {{ vendor.BusinessName }}
                 </h2>
                 <p class="text-body-1 mb-4 text-justify text-black">
                   {{ extractDescription(vendor.Description) }}
