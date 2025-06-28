@@ -26,6 +26,12 @@
       "type": "string",
       "unique": true
     },
+    "Phone": {
+      "type": "string",
+      "required": false,
+      "unique": true,
+      "regex": "/^\\+?[\\d\\s\\-()]{7,15}$/"
+    },
     "Description": {
       "type": "blocks"
     },
@@ -37,12 +43,6 @@
     "StartDate": {
       "type": "date",
       "required": true
-    },
-    "Phone": {
-      "type": "string",
-      "required": false,
-      "unique": true,
-      "regex": "/^\\+?[\\d\\s\\-()]{7,15}$/"
     },
     "Photos": {
       "type": "media",

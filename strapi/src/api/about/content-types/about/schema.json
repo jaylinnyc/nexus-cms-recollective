@@ -11,6 +11,16 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "CoverImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
     "Text": {
       "type": "blocks"
     }
