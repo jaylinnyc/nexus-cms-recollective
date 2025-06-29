@@ -178,7 +178,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue'
 import { AxiosError } from 'axios'
-import api from '@/plugins/axios'
+import {api} from '@/plugins/axios'
 
 interface CalendarEvent {
   id: string
