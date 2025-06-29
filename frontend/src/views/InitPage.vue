@@ -17,7 +17,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { AxiosError } from 'axios'
-import api from '@/plugins/axios'
+import {api} from '@/plugins/axios'
 
 export default defineComponent({
   name: 'InitPage',

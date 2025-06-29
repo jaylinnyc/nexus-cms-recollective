@@ -146,7 +146,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import axios from "axios";
+import { strapiApi } from "@/plugins/axios";
 import { debounce } from "lodash";
 
 interface DescriptionNode {
@@ -233,7 +233,9 @@ export default defineComponent({
       pageSize: 10,
       pageCount: 1,
       total: 0,
-      apiUrl: import.meta.env.VITE_APP_STRAPI_API_URL || "https://cms.recollectivect.com",
+      apiUrl:
+        (window.runtimeConfig && window.runtimeConfig.VITE_APP_STRAPI_API_URL) ||
+        "https://cms.recollectivect.com",
     };
   },
   computed: {
@@ -259,21 +261,7 @@ export default defineComponent({
     }, 300),
     async loadVendorPage() {
       try {
-        const token = import.meta.env.VITE_APP_STRAPI_API_TOKEN;
-        if (!token) {
-          this.error = "Strapi API token is missing. Please check your .env file.";
-          console.warn("Skipping VendorPage API call due to missing token.");
-          return;
-        }
-
-        const response = await axios.get(
-          `${this.apiUrl}/api/vendor-page?populate=CoverImage`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await strapiApi.get("/api/vendor-page?populate=CoverImage");
 
         if (!response.data || !response.data.data) {
           throw new Error("Invalid response format: VendorPage data is missing");
@@ -283,7 +271,6 @@ export default defineComponent({
           Introduction: response.data.data.Introduction || null,
           Enable_Vendor_Link: response.data.data.Enable_Vendor_Link || false,
         };
-
       } catch (err: any) {
         console.error("Error loading VendorPage:", err);
         console.log("Full error:", err.response?.data || err.message);
@@ -299,14 +286,6 @@ export default defineComponent({
       this.filteredVendors = [];
 
       try {
-        const token = import.meta.env.VITE_APP_STRAPI_API_TOKEN;
-        if (!token) {
-          this.error = "Strapi API token is missing. Please check your .env file.";
-          console.warn("Skipping Vendors API call due to missing token.");
-          this.loading = false;
-          return;
-        }
-
         let query = `pagination[page]=${this.currentPage}&pagination[pageSize]=${this.pageSize}&populate[0]=CoverImage&filters[Active][$eq]=true`;
 
         if (this.searchQuery) {
@@ -320,12 +299,7 @@ export default defineComponent({
           query += `&sort[0]=BusinessName:desc`;
         }
 
-        const vendorUrl = `${this.apiUrl}/api/vendors?${query}`;
-        const response = await axios.get(vendorUrl, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await strapiApi.get(`/api/vendors?${query}`);
 
         if (!response.data || !Array.isArray(response.data.data)) {
           throw new Error("Invalid response format: data is missing or not an array");
@@ -338,7 +312,6 @@ export default defineComponent({
         this.filteredVendors = [...this.vendors];
         this.pageCount = response.data.meta.pagination.pageCount || 1;
         this.total = response.data.meta.pagination.total || 0;
-
       } catch (err: any) {
         console.error("Error loading vendors:", err);
         console.log("Full error:", err.response?.data || err.message);

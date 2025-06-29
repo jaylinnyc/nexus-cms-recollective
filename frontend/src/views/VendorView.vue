@@ -205,7 +205,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import axios from "axios";
+import { strapiApi } from "@/plugins/axios";
 
 interface DescriptionNode {
   type: string;
@@ -248,7 +248,9 @@ export default defineComponent({
       error: null,
       imageDialog: false,
       selectedImageIndex: 0,
-      apiUrl: import.meta.env.VITE_APP_STRAPI_API_URL || "https://cms.recollectivect.com",
+      apiUrl:
+        (window.runtimeConfig && window.runtimeConfig.VITE_APP_STRAPI_API_URL) ||
+        "https://cms.recollectivect.com",
       snackbar: false,
     };
   },
@@ -278,17 +280,9 @@ export default defineComponent({
       this.loading = true;
       this.error = null;
       try {
-        const token = import.meta.env.VITE_APP_STRAPI_API_TOKEN;
-        if (!token) {
-          throw new Error("Strapi API token is missing.");
-        }
-
         const documentId = this.$route.params.documentId;
-        const response = await axios.get(
-          `${this.apiUrl}/api/vendors/${documentId}?populate[0]=CoverImage&populate[1]=Photos`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
+        const response = await strapiApi.get(
+          `/api/vendors/${documentId}?populate[0]=CoverImage&populate[1]=Photos`
         );
 
         if (!response.data?.data) {
@@ -299,7 +293,9 @@ export default defineComponent({
           throw new Error("This vendor is not active.");
         }
       } catch (err: any) {
-        this.error = err.response?.status === 404
+        this.error = err.response?.status === 401
+          ? "Authentication failed. Please contact support."
+          : err.response?.status === 404
           ? `Vendor with ID ${this.$route.params.documentId} not found.`
           : "Failed to load vendor details. Please try again later.";
         this.vendor = null;

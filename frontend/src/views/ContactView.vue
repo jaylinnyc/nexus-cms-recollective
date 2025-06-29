@@ -152,7 +152,7 @@
 import { defineComponent, ref } from "vue";
 import ContactForm from "../components/ContactForm.vue";
 import { AxiosError } from "axios";
-import api from "@/plugins/axios";
+import {api} from "@/plugins/axios";
 
 export default defineComponent({
   name: "ContactView",

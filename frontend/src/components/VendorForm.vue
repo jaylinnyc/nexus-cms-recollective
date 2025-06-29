@@ -168,7 +168,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { AxiosError } from 'axios';
-import api from '@/plugins/axios';
+import {api} from '@/plugins/axios';
 
 export default defineComponent({
   name: 'VendorForm',
