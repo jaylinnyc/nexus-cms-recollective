@@ -9,6 +9,8 @@ services:
     restart: unless-stopped
     networks:
       - traefik-net
+    volumes:
+      - ./.env.production.frontend:/usr/share/nginx/html/.env:ro
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-net"
