@@ -130,7 +130,7 @@
           <section class="contact-section mb-12" v-if="vendor">
             <h2 class="section-title mb-6">Get in Touch</h2>
             <v-row justify="center" align="center" class="contact-row">
-              <v-col cols="12" sm="6" md="4" v-if="vendor.Email" class="contact-item-col">
+              <v-col cols="12" sm="5" v-if="vendor.Email" class="contact-item-col">
                 <v-card flat class="contact-card pa-4">
                   <v-icon icon="mdi-email" color="primary" class="contact-icon" />
                   <div class="contact-details">
@@ -141,7 +141,7 @@
                   </div>
                 </v-card>
               </v-col>
-              <v-col cols="12" sm="6" md="4" v-if="vendor.IGHandle" class="contact-item-col">
+              <v-col cols="12" sm="5" v-if="vendor.IGHandle" class="contact-item-col">
                 <v-card flat class="contact-card pa-4">
                   <v-icon icon="mdi-instagram" color="primary" class="contact-icon" />
                   <div class="contact-details">
@@ -166,7 +166,6 @@
               color="primary"
               variant="outlined"
               to="/vendors"
-              class="back-btn"
             >
               Explore All Vendors
             </v-btn>
@@ -186,7 +185,7 @@
         color="primary"
         variant="outlined"
         to="/vendors"
-        class="mt-4 back-btn"
+        class="mt-4"
       >
         View All Vendors
       </v-btn>
@@ -526,22 +525,6 @@ export default defineComponent({
 
 .contact-link:hover {
   color: #1976d2;
-}
-
-/* Back Button */
-.back-btn {
-  border-radius: 50px;
-  padding: 0.75rem 2rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-width: 2px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.back-btn:hover {
-  background-color: #1976d2;
-  color: white;
 }
 
 /* Loading/Error */
