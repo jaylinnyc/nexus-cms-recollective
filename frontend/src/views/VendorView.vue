@@ -295,7 +295,7 @@ export default defineComponent({
           throw new Error("Invalid response format: Vendor data is missing");
         }
         this.vendor = response.data.data;
-        if (!this.vendor.Active) {
+        if (!this.vendor?.Active) {
           throw new Error("This vendor is not active.");
         }
       } catch (err: any) {
