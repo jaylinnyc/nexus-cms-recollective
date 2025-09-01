@@ -96,7 +96,7 @@
       <v-row justify="center" no-gutters>
         <v-col cols="12" class="mb-4">
           <v-btn
-            v-for="social in socials.filter(s => s.href)"
+            v-for="social in socials.filter((s) => s.href)"
             :key="social.id"
             class="mx-2"
             icon
@@ -131,6 +131,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import { strapiApi } from "@/plugins/axios";
+import tiktokIcon from "@/assets/tiktok.svg";
 
 export default defineComponent({
   name: "MainLayout",
@@ -154,7 +155,7 @@ export default defineComponent({
       {
         id: "tiktok",
         isCustom: true,
-        customSrc: "@/assets/tiktok.svg",
+        customSrc: tiktokIcon,
         customAlt: "TikTok Logo",
         href: "",
         baseUrl: "https://www.tiktok.com/",
@@ -184,9 +185,15 @@ export default defineComponent({
           if (general.Logo && general.Logo.url) {
             logoUrl.value = `${strapiApi.defaults.baseURL}${general.Logo.url}`;
           }
-          socials.value[0].href = general.Facebook ? `${socials.value[0].baseUrl}${general.Facebook}` : "";
-          socials.value[1].href = general.Instagram ? `${socials.value[1].baseUrl}${general.Instagram}` : "";
-          socials.value[2].href = general.Tiktok ? `${socials.value[2].baseUrl}${general.Tiktok}` : "";
+          socials.value[0].href = general.Facebook
+            ? `${socials.value[0].baseUrl}${general.Facebook}`
+            : "";
+          socials.value[1].href = general.Instagram
+            ? `${socials.value[1].baseUrl}${general.Instagram}`
+            : "";
+          socials.value[2].href = general.Tiktok
+            ? `${socials.value[2].baseUrl}${general.Tiktok}`
+            : "";
         }
       } catch (error) {
         console.error("Error fetching general info from Strapi:", error);
