@@ -16,7 +16,7 @@
         ></v-app-bar-nav-icon>
         <router-link to="/" class="d-flex align-center text-decoration-none">
           <img
-            src="/rc-transparent.png"
+            :src="logoUrl"
             alt="The Recollective Logo"
             style="height: 25px; margin-left: 10px"
             class="transition-transform hover:scale-105"
@@ -51,7 +51,7 @@
         <v-list-item class="py-6">
           <template v-slot:prepend>
             <img
-              src="/rc-transparent.png"
+              :src="logoUrl"
               alt="The Recollective Logo"
               style="height: 48px; margin-right: 16px"
             />
@@ -95,51 +95,24 @@
     <v-footer color="white" class="text-center py-6 elevation-4">
       <v-row justify="center" no-gutters>
         <v-col cols="12" class="mb-4">
-          <!-- MDI Icons (Facebook only) -->
           <v-btn
-            v-for="icon in mdiIcons"
-            :key="icon.icon"
+            v-for="social in socials.filter(s => s.href)"
+            :key="social.id"
             class="mx-2"
             icon
             variant="text"
             color="black"
-            :href="icon.href"
+            :href="social.href"
             target="_blank"
-            :class="{ 'scale-110': hoverIcon === icon.icon }"
-            @mouseover="hoverIcon = icon.icon"
+            :class="{ 'scale-110': hoverIcon === social.id }"
+            @mouseover="hoverIcon = social.id"
             @mouseleave="hoverIcon = ''"
           >
-            <v-icon>{{ icon.icon }}</v-icon>
-          </v-btn>
-          <!-- Instagram -->
-          <v-btn
-            class="mx-2"
-            icon
-            variant="text"
-            color="black"
-            href="https://www.instagram.com/therecollectivect"
-            target="_blank"
-            :class="{ 'scale-110': hoverIcon === 'mdi-instagram' }"
-            @mouseover="hoverIcon = 'mdi-instagram'"
-            @mouseleave="hoverIcon = ''"
-          >
-            <v-icon>mdi-instagram</v-icon>
-          </v-btn>
-          <!-- TikTok SVG Image -->
-          <v-btn
-            class="mx-2"
-            icon
-            variant="text"
-            color="black"
-            href="https://www.tiktok.com/@threcollectivect"
-            target="_blank"
-            :class="{ 'scale-110': hoverIcon === 'tiktok' }"
-            @mouseover="hoverIcon = 'tiktok'"
-            @mouseleave="hoverIcon = ''"
-          >
+            <v-icon v-if="!social.isCustom">{{ social.icon }}</v-icon>
             <img
-              src="@/assets/tiktok.svg"
-              alt="TikTok Logo"
+              v-else
+              :src="social.customSrc"
+              :alt="social.customAlt"
               class="social-icon"
             />
           </v-btn>
@@ -156,13 +129,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
+import { strapiApi } from "@/plugins/axios";
 
 export default defineComponent({
   name: "MainLayout",
   setup() {
     const drawer = ref(false);
     const hoverIcon = ref("");
+    const logoUrl = ref("/rc-transparent.png"); // Fallback
+    const socials = ref([
+      {
+        id: "facebook",
+        icon: "mdi-facebook",
+        href: "",
+        baseUrl: "https://www.facebook.com/",
+      },
+      {
+        id: "instagram",
+        icon: "mdi-instagram",
+        href: "",
+        baseUrl: "https://www.instagram.com/",
+      },
+      {
+        id: "tiktok",
+        isCustom: true,
+        customSrc: "@/assets/tiktok.svg",
+        customAlt: "TikTok Logo",
+        href: "",
+        baseUrl: "https://www.tiktok.com/",
+      },
+    ]);
     const menuItems = [
       { title: "Home", path: "/", icon: "mdi-home" },
       { title: "About", path: "/about", icon: "mdi-information" },
@@ -174,18 +171,34 @@ export default defineComponent({
       },
       { title: "Contact", path: "/contact", icon: "mdi-email" },
     ];
-    const mdiIcons = [
-      {
-        icon: "mdi-facebook",
-        href: "https://www.facebook.com/therecollectivect",
-      },
-    ];
+
+    onMounted(async () => {
+      try {
+        const response = await strapiApi.get("/api/generals?populate=Logo");
+        const data = response.data.data;
+
+        console.log("Fetched general info from Strapi:", data);
+        if (data.length > 0) {
+          const general = data[0];
+          console.log("General attributes:", general);
+          if (general.Logo && general.Logo.url) {
+            logoUrl.value = `${strapiApi.defaults.baseURL}${general.Logo.url}`;
+          }
+          socials.value[0].href = general.Facebook ? `${socials.value[0].baseUrl}${general.Facebook}` : "";
+          socials.value[1].href = general.Instagram ? `${socials.value[1].baseUrl}${general.Instagram}` : "";
+          socials.value[2].href = general.Tiktok ? `${socials.value[2].baseUrl}${general.Tiktok}` : "";
+        }
+      } catch (error) {
+        console.error("Error fetching general info from Strapi:", error);
+      }
+    });
 
     return {
       drawer,
       hoverIcon,
+      logoUrl,
+      socials,
       menuItems,
-      mdiIcons,
     };
   },
 });
