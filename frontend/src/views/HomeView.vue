@@ -12,7 +12,7 @@
           <div class="overlay"></div>
           <div class="logo-container">
             <img
-              src="/rc-transparent.png"
+              :src="logoUrl"
               alt="The Recollective Logo"
               class="animated-logo"
             />
@@ -92,6 +92,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 import VendorCard from "../components/VendorCard.vue";
+import { strapiApi } from "@/plugins/axios";
 
 export default defineComponent({
   name: "HomeView",
@@ -124,8 +125,22 @@ export default defineComponent({
     ];
 
     const showHero = ref(true);
+    const logoUrl = ref("/rc-transparent.png"); // Fallback
 
-    onMounted(() => {
+    onMounted(async () => {
+      try {
+        const response = await strapiApi.get("/api/generals?populate=Logo");
+        const data = response.data.data;
+        if (data.length > 0) {
+          const general = data[0];
+          if (general.Logo && general.Logo.url) {
+            logoUrl.value = `${strapiApi.defaults.baseURL}${general.Logo.url}`;
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching general info from Strapi:", error);
+      }
+
       const overlay = document.querySelector(".overlay") as HTMLElement;
       if (overlay) {
         overlay.style.background = "rgba(255, 255, 255, 0)";
@@ -148,7 +163,7 @@ export default defineComponent({
       window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    return { vendors, showHero, onHeroRemoved };
+    return { vendors, showHero, onHeroRemoved, logoUrl };
   },
 });
 </script>
