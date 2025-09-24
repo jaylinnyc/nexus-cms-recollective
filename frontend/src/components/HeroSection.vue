@@ -6,7 +6,7 @@
     scale="1.5"
   >
     <div class="d-flex flex-column fill-height justify-center align-center text-white">
-      <h1 class="text-h2 font-weight-bold text-center mb-4">The Recollective</h1>
+      <h1 class="text-h2 font-weight-bold text-center mb-4">Recollective</h1>
       <h2 class="text-h5 text-center">Links today's careers to tomorrow's possibilities</h2>
       <v-btn
         class="mt-6"

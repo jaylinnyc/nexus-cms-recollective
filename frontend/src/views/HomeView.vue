@@ -13,7 +13,7 @@
           <div class="logo-container">
             <img
               :src="logoUrl"
-              alt="The Recollective Logo"
+              alt="Recollective Logo"
               class="animated-logo"
             />
           </div>
@@ -31,7 +31,7 @@
               <v-col cols="12" md="10" lg="8">
                 <div class="pa-8 text-center elevation-4 rounded-lg bg-white">
                   <h2 class="text-h3 font-weight-bold mb-6 text-black">
-                    Welcome to The Recollective
+                    Welcome to Recollective
                   </h2>
                   <p class="text-body-1 text-black opacity-90 mb-4">
                     Step into a space where every object tells a story. Housed

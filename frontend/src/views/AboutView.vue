@@ -18,7 +18,7 @@
         <v-col cols="12" md="10" lg="8">
           <h2 class="text-h4 mb-6 text-black">Our Mission</h2>
           <p class="text-body-1 text-justify mb-4 text-black">
-            At The Recollective, our mission is to preserve the beauty of the
+            At Recollective, our mission is to preserve the beauty of the
             past while inspiring creativity in the present. We curate vintage,
             antique, and salvaged goods with soul. A space where history,
             design, and community come together. By supporting local vendors and
@@ -35,7 +35,7 @@
         <v-col cols="12" md="10" lg="8">
           <h2 class="text-h4 mb-6 text-black">Our Vendors</h2>
           <p class="text-body-1 mb-4 text-justify text-black">
-            The Recollective is home to a thoughtfully curated group of vendors,
+            Recollective is home to a thoughtfully curated group of vendors,
             each with a deep appreciation for history, craftsmanship and design.
             From antique collectors and vintage curators to salvage specialists
             and creative makers, our vendors bring years of experience with a
@@ -53,7 +53,7 @@
         <v-col cols="12" md="10" lg="8">
           <h2 class="text-h4 mb-6 text-black">Our Space</h2>
           <p class="text-body-1 text-justify mb-4 text-black">
-            The Recollective is a multi-vendor vintage and antique marketplace
+            Recollective is a multi-vendor vintage and antique marketplace
             located in the heart of Bridgeport, Connecticut. Housed in a
             beautifully restored, 50,000 sq ft historic printing press building
             we offer a thoughtfully curated mix of vintage furniture,
@@ -62,7 +62,7 @@
           </p>
           <p class="text-body-1 text-justify text-black">
             Whether you're sourcing a standout piece for your home, hunting for
-            rare treasures or simply exploring, The Recollective is a
+            rare treasures or simply exploring, Recollective is a
             destination built on discovery, sustainability and storytelling.
             Come connect with Bridgeport's creative community.
           </p>

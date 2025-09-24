@@ -11,7 +11,7 @@
           Upcoming Events
         </h1>
         <p class="text-body-1 text-white-70" :class="{ 'text-body-2': $vuetify.display.xs }">
-          Join our community events and stay connected with The Recollective.
+          Join our community events and stay connected with Recollective.
         </p>
       </div>
     </v-parallax>
@@ -248,7 +248,7 @@ export default defineComponent({
         timeMax.setFullYear(timeMax.getFullYear() + 1)
 
         const params: Record<string, string> = {
-          calendar_name: 'The Recollective',
+          calendar_name: 'Recollective',
           time_min: timeMin,
           time_max: timeMax.toISOString(),
           max_results: '10'
