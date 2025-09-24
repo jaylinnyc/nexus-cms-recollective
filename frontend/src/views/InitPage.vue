@@ -1,6 +1,6 @@
 <template>
   <div class="init-page">
-    <h2>Initialize The Recollective</h2>
+    <h2>Initialize Recollective</h2>
     <div v-if="isLoading">
       <p>Loading initialization status...</p>
     </div>

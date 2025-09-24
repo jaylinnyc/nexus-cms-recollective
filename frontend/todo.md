@@ -1,4 +1,4 @@
-# The Recollective Website Development
+# Recollective Website Development
 
 ## Setup and Planning
 - [x] Extract content from PDF

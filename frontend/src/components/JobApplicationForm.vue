@@ -90,7 +90,7 @@
               <v-icon size="48" color="success" class="mb-4">mdi-check-circle</v-icon>
               <h2 class="text-h5 font-weight-bold mb-4">Application Submitted!</h2>
               <p class="text-body-1 text-grey-darken-1 mb-6">
-                Thank you for applying to join The Recollective. We'll review your application and reach out soon.
+                Thank you for applying to join Recollective. We'll review your application and reach out soon.
               </p>
               <v-btn
                 color="primary"

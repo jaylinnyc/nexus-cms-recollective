@@ -134,7 +134,7 @@
             <v-icon size="48" color="success" class="mb-4">mdi-check-circle</v-icon>
             <h2 class="text-h5 font-weight-bold mb-4 text-black">Application Submitted!</h2>
             <p class="text-body-1 text-grey-darken-1 mb-6">
-              Thank you for applying to become a vendor at The Recollective. We'll review your application and reach out soon to discuss next steps.
+              Thank you for applying to become a vendor at Recollective. We'll review your application and reach out soon to discuss next steps.
             </p>
             <v-btn
               color="black"

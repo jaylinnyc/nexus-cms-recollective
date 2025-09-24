@@ -259,7 +259,7 @@ export default defineComponent({
       return window.location.href;
     },
     shareText(): string {
-      return `Discover ${this.vendor?.BusinessName || "this vendor"} at The Recollective in Bridgeport, CT!`;
+      return `Discover ${this.vendor?.BusinessName || "this vendor"} at Recollective in Bridgeport, CT!`;
     },
     vendorCoverImageUrl(): string {
       return this.vendor?.CoverImage

@@ -17,7 +17,7 @@
         <router-link to="/" class="d-flex align-center text-decoration-none">
           <img
             :src="logoUrl"
-            alt="The Recollective Logo"
+            alt="Recollective Logo"
             style="height: 25px; margin-left: 10px"
             class="transition-transform hover:scale-105"
           />
@@ -52,12 +52,12 @@
           <template v-slot:prepend>
             <img
               :src="logoUrl"
-              alt="The Recollective Logo"
+              alt="Recollective Logo"
               style="height: 48px; margin-right: 16px"
             />
           </template>
           <v-list-item-title class="text-h6 font-weight-bold text-black"
-            >The Recollective</v-list-item-title
+            >Recollective</v-list-item-title
           >
           <v-list-item-subtitle class="text-caption text-gray-600"
             >Bridgeport, CT</v-list-item-subtitle
@@ -120,7 +120,7 @@
         <v-col cols="12">
           <div class="text-center text-black opacity-80 text-body-2">
             © {{ new Date().getFullYear() }} —
-            <strong>The Recollective</strong> — Bridgeport, CT
+            <strong>Recollective</strong> — Bridgeport, CT
           </div>
         </v-col>
       </v-row>

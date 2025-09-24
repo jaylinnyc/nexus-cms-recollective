@@ -16,7 +16,7 @@
       <v-row justify="center">
         <v-col cols="12" md="10" lg="8">
           <p class="text-body-1 mb-6 text-black">
-            {{ vendorPage.Introduction || 'The Recollective is home to a vibrant community of vendors, each bringing unique stories, styles, and treasures to our historic marketplace in Bridgeport. From seasoned antique dealers to emerging artists, discover the passion behind every booth.' }}
+            {{ vendorPage.Introduction || 'Recollective is home to a vibrant community of vendors, each bringing unique stories, styles, and treasures to our historic marketplace in Bridgeport. From seasoned antique dealers to emerging artists, discover the passion behind every booth.' }}
           </p>
           <!-- Search and Sort Controls -->
           <v-row class="mb-6">

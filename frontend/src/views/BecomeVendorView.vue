@@ -27,7 +27,7 @@
         <v-col cols="12" md="10" lg="8">
           <h2 class="text-h4 mb-6 text-black">Application Process</h2>
           <p class="text-body-1 mb-4 text-black">
-            We aim to make becoming a vendor at The Recollective a straightforward process. We seek vendors offering unique, high-quality items with a story to ensure a cohesive market experience.
+            We aim to make becoming a vendor at Recollective a straightforward process. We seek vendors offering unique, high-quality items with a story to ensure a cohesive market experience.
           </p>
           <v-list>
             <v-list-item>
