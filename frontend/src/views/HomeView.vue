@@ -35,7 +35,7 @@
                   </h2>
                   <p class="text-body-1 text-black opacity-90 mb-4">
                     Step into a space where every object tells a story. Housed
-                    in a historic printing press in the heart of Bridgeport, The
+                    in a historic printing press in the heart of Bridgeport,
                     Recollective is a curated multivendor marketplace
                     celebrating the beauty of past vintage, antique, salvaged
                     and storied goods deserving of a second life. From timeless
