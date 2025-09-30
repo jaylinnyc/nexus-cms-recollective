@@ -173,13 +173,13 @@ export default defineComponent({
     const socialLinks = [
       {
         icon: "mdi-facebook",
-        href: "https://www.facebook.com/therecollectivect",
+        href: "https://www.facebook.com/recollectivect",
       },
       {
         icon: "mdi-instagram",
-        href: "https://www.instagram.com/therecollectivect",
+        href: "https://www.instagram.com/recollectivect",
       },
-      { icon: "tiktok", href: "https://www.tiktok.com/@threcollectivect" },
+      { icon: "tiktok", href: "https://www.tiktok.com/@recollectivect" },
     ];
 
     const emailRules = [
