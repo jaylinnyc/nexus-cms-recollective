@@ -144,13 +144,13 @@ export default defineComponent({
         id: "facebook",
         icon: "mdi-facebook",
         href: "",
-        baseUrl: "https://www.facebook.com/recollectivect",
+        baseUrl: "https://www.facebook.com/",
       },
       {
         id: "instagram",
         icon: "mdi-instagram",
         href: "",
-        baseUrl: "https://www.instagram.com/recollectivect",
+        baseUrl: "https://www.instagram.com/",
       },
       {
         id: "tiktok",
@@ -158,7 +158,7 @@ export default defineComponent({
         customSrc: tiktokIcon,
         customAlt: "TikTok Logo",
         href: "",
-        baseUrl: "https://www.tiktok.com/@recollectivect",
+        baseUrl: "https://www.tiktok.com/",
       },
     ]);
     const menuItems = [
