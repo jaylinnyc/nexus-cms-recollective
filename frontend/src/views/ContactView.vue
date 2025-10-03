@@ -105,8 +105,8 @@
                   <h3 class="text-h6 font-weight-bold mb-3">Follow Us</h3>
                   <div class="d-flex flex-wrap gap-2 justify-center">
                     <v-btn
-                      v-for="social in socialLinks"
-                      :key="social.icon"
+                      v-for="social in socials.filter((s) => s.href)"
+                      :key="social.id"
                       :href="social.href"
                       target="_blank"
                       icon
@@ -115,13 +115,11 @@
                       size="small"
                       class="social-btn mx-2"
                     >
-                      <v-icon v-if="social.icon !== 'tiktok'">{{
-                        social.icon
-                      }}</v-icon>
+                      <v-icon v-if="!social.isCustom">{{ social.icon }}</v-icon>
                       <img
                         v-else
-                        src="@/assets/tiktok.svg"
-                        alt="TikTok Logo"
+                        :src="social.customSrc"
+                        :alt="social.customAlt"
                         class="social-icon"
                       />
                     </v-btn>
@@ -149,10 +147,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 import ContactForm from "../components/ContactForm.vue";
 import { AxiosError } from "axios";
-import {api} from "@/plugins/axios";
+import { api } from "@/plugins/axios";
+import { strapiApi } from "@/plugins/axios";
+import tiktokIcon from "@/assets/tiktok.svg";
 
 export default defineComponent({
   name: "ContactView",
@@ -170,17 +170,28 @@ export default defineComponent({
       color: "success",
     });
 
-    const socialLinks = [
+    const socials = ref([
       {
+        id: "facebook",
         icon: "mdi-facebook",
-        href: "https://www.facebook.com/recollectivect",
+        href: "",
+        baseUrl: "https://www.facebook.com/",
       },
       {
+        id: "instagram",
         icon: "mdi-instagram",
-        href: "https://www.instagram.com/recollectivect",
+        href: "",
+        baseUrl: "https://www.instagram.com/",
       },
-      { icon: "tiktok", href: "https://www.tiktok.com/@recollectivect" },
-    ];
+      {
+        id: "tiktok",
+        isCustom: true,
+        customSrc: tiktokIcon,
+        customAlt: "TikTok Logo",
+        href: "",
+        baseUrl: "https://www.tiktok.com/",
+      },
+    ]);
 
     const emailRules = [
       (v: string) => !!v || "Email is required",
@@ -221,12 +232,36 @@ export default defineComponent({
       }
     };
 
+    onMounted(async () => {
+      try {
+        const response = await strapiApi.get("/api/generals?populate=Logo");
+        const data = response.data.data;
+
+        console.log("Fetched general info from Strapi:", data);
+        if (data.length > 0) {
+          const general = data[0];
+          console.log("General attributes:", general);
+          socials.value[0].href = general.Facebook
+            ? `${socials.value[0].baseUrl}${general.Facebook}`
+            : "";
+          socials.value[1].href = general.Instagram
+            ? `${socials.value[1].baseUrl}${general.Instagram}`
+            : "";
+          socials.value[2].href = general.Tiktok
+            ? `${socials.value[2].baseUrl}${general.Tiktok}`
+            : "";
+        }
+      } catch (error) {
+        console.error("Error fetching general info from Strapi:", error);
+      }
+    });
+
     return {
       newsletterValid,
       newsletterLoading,
       newsletterEmail,
       newsletterSnackbar,
-      socialLinks,
+      socials,
       emailRules,
       hoveredCard,
       hoverCard,
