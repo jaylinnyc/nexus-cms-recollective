@@ -95,9 +95,20 @@
                     <v-list-item-title class="font-weight-bold"
                       >Hours</v-list-item-title
                     >
-                    <v-list-item-subtitle>
-                      coming soon fall 2025
-                    </v-list-item-subtitle>
+                    <div>
+                      <p class="mb-2">
+                        We will be open 10 AM - 4 PM on the following dates:
+                      </p>
+                      <ul class="mb-4">
+                        <li>Saturday, November 22</li>
+                        <li>Sunday, November 23</li>
+                        <li>Saturday, November 29</li>
+                        <li>Sunday, November 30</li>
+                      </ul>
+                      <p>
+                        After that, our regular hours are Sundays, <br/>10 AM - 4 PM until further notice.
+                      </p>
+                    </div>
                   </v-list-item>
                 </v-list>
 
