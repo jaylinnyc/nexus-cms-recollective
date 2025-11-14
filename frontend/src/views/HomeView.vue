@@ -50,6 +50,81 @@
             </v-row>
           </v-container>
 
+          <!-- Grand Opening Announcement -->
+          <v-container class="py-12 bg-grey-lighten-4">
+            <v-row justify="center">
+              <v-col cols="12" md="10" lg="8">
+                <div class="pa-8 text-center elevation-4 rounded-lg bg-white">
+                  <h2 class="text-h3 font-weight-bold mb-6 text-black">
+                    Grand Opening Announcement
+                  </h2>
+                  <p class="text-body-1 text-black opacity-90 mb-4">
+                    Join us for our exciting grand opening and initial operating days!
+                  </p>
+
+                  <!-- Operating Hours -->
+                  <div class="mb-8">
+                    <h3 class="text-h5 font-weight-bold mb-4 text-black">Operating Hours</h3>
+                    <p class="text-body-1 text-grey-darken-2 mb-2">
+                      <strong>Grand Opening:</strong> Saturday, November 22, 10 AM - 4 PM.
+                    </p>
+                    <p class="text-body-1 text-grey-darken-2 mb-2">
+                      We will be open 10 AM - 4 PM on the following dates:
+                    </p>
+                    <ul class="text-body-1 text-grey-darken-2 mb-4 list-disc pl-6 mx-auto" style="max-width: 300px;">
+                      <li>Saturday, November 22</li>
+                      <li>Sunday, November 23</li>
+                      <li>Saturday, November 29</li>
+                      <li>Sunday, November 30</li>
+                    </ul>
+                    <p class="text-body-1 text-grey-darken-2">
+                      After that, our regular hours are Sundays, 10 AM - 4 PM until further notice.
+                    </p>
+                  </div>
+
+                  <!-- Map of the Space -->
+                  <div>
+                    <h3 class="text-h5 font-weight-bold mb-4 text-black">Map of the Space</h3>
+                    <p class="text-body-1 text-grey-darken-2 mb-6">
+                      Explore our space layout below. Click the images to view full screen or download the full PDF for more details.
+                    </p>
+                    <v-row justify="center">
+                      <v-col cols="12" sm="6">
+                        <v-img
+                          src="https://cms.recollectivect.com/uploads/588_State_St_Map_01_9101fab156.png"
+                          alt="Space Map 1"
+                          class="rounded-lg elevation-2 mb-4 cursor-pointer"
+                          aspect-ratio="1"
+                          cover
+                          @click="openImage('https://cms.recollectivect.com/uploads/588_State_St_Map_01_9101fab156.png')"
+                        ></v-img>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <v-img
+                          src="https://cms.recollectivect.com/uploads/588_State_St_Map_02_ab3db98925.png"
+                          alt="Space Map 2"
+                          class="rounded-lg elevation-2 mb-4 cursor-pointer"
+                          aspect-ratio="1"
+                          cover
+                          @click="openImage('https://cms.recollectivect.com/uploads/588_State_St_Map_02_ab3db98925.png')"
+                        ></v-img>
+                      </v-col>
+                    </v-row>
+                    <v-btn
+                      color="primary"
+                      variant="outlined"
+                      href="https://cms.recollectivect.com/uploads/588_State_St_Maps_779d261d1f.pdf"
+                      target="_blank"
+                      class="mt-4 rounded-pill px-6"
+                    >
+                      Download Map PDF
+                    </v-btn>
+                  </div>
+                </div>
+              </v-col>
+            </v-row>
+          </v-container>
+
           <!-- Featured Vendors -->
           <v-container class="py-12 bg-grey-lighten-5">
             <h2 class="text-h3 font-weight-bold text-center mb-10 text-black">
@@ -82,6 +157,28 @@
               >
             </div>
           </v-container>
+
+          <!-- Image Dialog -->
+          <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+            <v-card class="d-flex flex-column" style="height: 100%;">
+              <v-toolbar dark color="primary">
+                <v-toolbar-title>View Map</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn icon dark @click="dialog = false">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-toolbar>
+              <v-container fluid class="flex-grow-1 d-flex align-center justify-center pa-0">
+                <v-img
+                  :src="selectedImage"
+                  contain
+                  max-height="100%"
+                  max-width="100%"
+                  class="mx-auto"
+                ></v-img>
+              </v-container>
+            </v-card>
+          </v-dialog>
 
         </div>
       </div>
@@ -126,6 +223,13 @@ export default defineComponent({
 
     const showHero = ref(true);
     const logoUrl = ref("/rc-transparent.png"); // Fallback
+    const dialog = ref(false);
+    const selectedImage = ref('');
+
+    const openImage = (url: string) => {
+      selectedImage.value = url;
+      dialog.value = true;
+    };
 
     onMounted(async () => {
       try {
@@ -163,7 +267,7 @@ export default defineComponent({
       window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    return { vendors, showHero, onHeroRemoved, logoUrl };
+    return { vendors, showHero, onHeroRemoved, logoUrl, dialog, selectedImage, openImage };
   },
 });
 </script>
@@ -264,6 +368,10 @@ export default defineComponent({
 
 .bg-grey-lighten-5 {
   background-color: #f5f5f5;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 /* Responsive Adjustments */
