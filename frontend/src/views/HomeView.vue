@@ -90,24 +90,22 @@
                     </p>
                     <v-row justify="center">
                       <v-col cols="12" sm="6">
-                        <v-img
+                        <img
                           src="https://cms.recollectivect.com/uploads/588_State_St_Map_01_9101fab156.png"
                           alt="Space Map 1"
                           class="rounded-lg elevation-2 mb-4 cursor-pointer"
-                          aspect-ratio="1"
-                          cover
+                          style="width: 100%; height: auto; display: block;"
                           @click="openImage('https://cms.recollectivect.com/uploads/588_State_St_Map_01_9101fab156.png')"
-                        ></v-img>
+                        />
                       </v-col>
                       <v-col cols="12" sm="6">
-                        <v-img
+                        <img
                           src="https://cms.recollectivect.com/uploads/588_State_St_Map_02_ab3db98925.png"
                           alt="Space Map 2"
                           class="rounded-lg elevation-2 mb-4 cursor-pointer"
-                          aspect-ratio="1"
-                          cover
+                          style="width: 100%; height: auto; display: block;"
                           @click="openImage('https://cms.recollectivect.com/uploads/588_State_St_Map_02_ab3db98925.png')"
-                        ></v-img>
+                        />
                       </v-col>
                     </v-row>
                     <v-btn
