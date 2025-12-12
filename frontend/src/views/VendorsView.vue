@@ -74,7 +74,7 @@
                 </p>
                 <h3 class="text-h6 mb-2 text-black">Contact:</h3>
                 <v-list>
-                  <v-list-item v-if="vendor.Email">
+                  <v-list-item v-if="vendor.Email && (vendor.ShowEmail !== false)">
                     <v-list-item-title
                       >Email: {{ vendor.Email }}</v-list-item-title
                     >
@@ -173,6 +173,7 @@ interface Vendor {
   IGHandle: string | null;
   Description: DescriptionNode[];
   Active: boolean;
+  ShowEmail: boolean;
   StartDate: string;
   Phone: string | null;
   CoverImage: Media | null;
