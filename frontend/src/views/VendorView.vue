@@ -130,7 +130,7 @@
           <section class="contact-section mb-12" v-if="vendor">
             <h2 class="section-title mb-6">Get in Touch</h2>
             <v-row justify="center" align="center" class="contact-row">
-              <v-col cols="12" sm="5" v-if="vendor.Email" class="contact-item-col">
+              <v-col cols="12" sm="5" v-if="vendor.Email && vendor.ShowEmail" class="contact-item-col">
                 <v-card flat class="contact-card pa-4">
                   <v-icon icon="mdi-email" color="primary" class="contact-icon" />
                   <div class="contact-details">
@@ -227,6 +227,7 @@ interface Vendor {
   IGHandle: string | null;
   Description: DescriptionNode[];
   Active: boolean;
+  ShowEmail: boolean;
   CoverImage: Media | null;
   Photos: Media[] | null;
 }

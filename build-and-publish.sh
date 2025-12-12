@@ -22,12 +22,18 @@ if [ -z "$DOCKER_REGISTRY_USERNAME" ] || [ -z "$DOCKER_REGISTRY_PASSWORD" ]; the
 fi
 
 # Check for Dockerfile existence
-for dir in frontend backend image-resizer; do
+for dir in frontend image-resizer; do
     if [ ! -f "./$dir/Dockerfile" ]; then
         echo "Error: Dockerfile not found in ./$dir"
         exit 1
     fi
 done
+
+# Check for Strapi Dockerfile
+if [ ! -f "./strapi/Dockerfile.prod" ]; then
+    echo "Error: Dockerfile.prod not found in ./strapi"
+    exit 1
+fi
 
 # Set up QEMU for multi-platform builds
 if ! docker run --rm --privileged tonistiigi/binfmt:latest --install all; then
@@ -58,15 +64,6 @@ docker buildx build \
     --push \
     ./frontend
 
-# Build and push backend image
-echo "[$(date)] Starting build for recollective-backend"
-docker buildx build \
-    --platform linux/amd64,linux/arm64 \
-    --tag docker.goodgermy.com/nexus/recollective-backend:latest \
-    --file ./backend/Dockerfile \
-    --push \
-    ./backend
-
 # Build and push image-resizer image
 echo "[$(date)] Starting build for recollective-image-resizer"
 docker buildx build \
@@ -75,5 +72,14 @@ docker buildx build \
     --file ./image-resizer/Dockerfile \
     --push \
     ./image-resizer
+
+# Build and push strapi image
+echo "[$(date)] Starting build for recollective-strapi"
+docker buildx build \
+    --platform linux/amd64,linux/arm64 \
+    --tag docker.goodgermy.com/nexus/recollective/strapi:latest \
+    --file ./strapi/Dockerfile.prod \
+    --push \
+    ./strapi
 
 echo "[$(date)] Successfully built and pushed all Docker images"

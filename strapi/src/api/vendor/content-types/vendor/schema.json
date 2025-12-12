@@ -40,6 +40,11 @@
       "required": true,
       "default": true
     },
+    "ShowEmail": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
     "StartDate": {
       "type": "date",
       "required": true
